@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const TrackMouse: React.FC = () => {
+const MoveLineFromOrigin: React.FC = () => {
     const height: number = 500
     const width: number = 500
 
@@ -19,7 +19,7 @@ const TrackMouse: React.FC = () => {
                 width={width}
             >
                 <rect
-                    fill="rebeccapurple"
+                    fill="orange"
                     width={width * .5}
                     height={height * .5}
                     x={width * .25}
@@ -30,16 +30,31 @@ const TrackMouse: React.FC = () => {
                     }}
 
                 />
+
+                <circle 
+                    cx={width * .5}
+                    cy={height * .5 - height * .25}
+                    r={10}
+                    fill='white'
+                />
+                <line 
+                    x1={width * .5}
+                    y1={height * .5 - height * .25}
+                    x2={mousePosition.x}
+                    y2={mousePosition.y}
+                    stroke={'white'}
+                />
                 <circle 
                     cx={mousePosition.x}
                     cy={mousePosition.y}
-                    r={10}
+                    r={5}
                     fill={'white'}
                 />
+
             </svg>
         </div>
 
     )
 }
 
-export default TrackMouse
+export default MoveLineFromOrigin
