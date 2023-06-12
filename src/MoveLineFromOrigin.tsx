@@ -30,7 +30,6 @@ const MoveLineFromOrigin: React.FC = () => {
                     }}
 
                 />
-
                 <circle 
                     cx={width * .5}
                     cy={height * .5 - height * .25}
