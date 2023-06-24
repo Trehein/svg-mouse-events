@@ -1,14 +1,15 @@
-import React from 'react';
-import TrackMouse from './TrackMouse';
-import MoveLineFromOrigin from './MoveLineFromOrigin';
-import ShowBeyondRange from './ShowBeyondRange';
+import TrackMouse from './demoComponents/TrackMouse';
+import MoveLineFromOrigin from './demoComponents/MoveLineFromOrigin';
+import ShowBeyondRange from './demoComponents/ShowBeyondRange';
+import SingleBallBounce from './demoComponents/SingleBallBounce';
 
 function App() {
   return (
     <div className="App">
-      <TrackMouse />
+      <SingleBallBounce />
+      {/* <TrackMouse />
       <MoveLineFromOrigin />
-      <ShowBeyondRange />
+      <ShowBeyondRange /> */}
     </div>
   );
 }
