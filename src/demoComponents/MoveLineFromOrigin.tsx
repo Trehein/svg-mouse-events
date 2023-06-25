@@ -25,7 +25,6 @@ const MoveLineFromOrigin: React.FC = () => {
                     x={width * .25}
                     y={0}
                     onMouseMove={(e) => {
-                        console.log(e)
                         setMousePosition({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
                     }}
 

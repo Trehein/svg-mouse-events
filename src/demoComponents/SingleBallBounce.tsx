@@ -4,7 +4,7 @@ import { animated, useSpring, useSpringRef, config } from '@react-spring/web'
 const SingleBallBounce: React.FC = () => {
     const height: number = 500
     const width: number = 500
-    const api = useSpringRef()
+    const molassesApi = useSpringRef()
     const bounceApi = useSpringRef()
 
     const bounceSprings = useSpring({
@@ -18,8 +18,7 @@ const SingleBallBounce: React.FC = () => {
     })
 
     const circleSprings = useSpring({
-        // loop: { reverse: true },
-        ref: api,
+        ref: molassesApi,
         from: {
             x: width * .5,
             y: height * .25,
@@ -29,7 +28,7 @@ const SingleBallBounce: React.FC = () => {
     })
 
     const handleClick = () => {
-        api.start({
+        molassesApi.start({
             config: config.molasses,
             to: {
                 y: circleSprings.y.get() === height * .25 ? height * .75 : height * .25,
