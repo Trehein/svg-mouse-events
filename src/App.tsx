@@ -3,13 +3,12 @@ import MoveLineFromOrigin from './demoComponents/MoveLineFromOrigin';
 import ShowBeyondRange from './demoComponents/ShowBeyondRange';
 import SingleBallBounce from './demoComponents/SingleBallBounce';
 import MoveMultiPath from './demoComponents/MoveMultiPath';
-// import FollowClickPath from './demoComponents/FollowClickPath';
-import AnimatedPath from './demoComponents/AnimatedPath';
+import AnimatedPathController from './demoComponents/AnimatedPath/AnimatedPathController';
 
 function App() {
   return (
     <div className="App">
-      <AnimatedPath />
+      <AnimatedPathController />
       {/* <FollowClickPath /> */}
       {/* <MoveMultiPath /> */}
       {/* <SingleBallBounce /> */}

@@ -7,6 +7,11 @@ export type IMetricMappedDataPoint = {
     time: number;
     value: number;
   }
+
+  export type DataObj = {
+    x: number
+    y: number
+  }
   
   export type ISetPlayAnimation = {
     (play: boolean): void;

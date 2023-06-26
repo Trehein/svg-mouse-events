@@ -20,7 +20,7 @@ function computeControlPoint(
   // Replace with 'current'
   const p = previous || current;
   const n = next || current; // The smoothing ratio
-  const smoothing = 0.2; // Properties of the opposed-line
+  const smoothing = .2; // Properties of the opposed-line
   const o = computeOppositeLine(p, n); // If is end-control-point, add PI to the angle to go backward
   const angle = o.angle + (reverse ? Math.PI : 0);
   const length = o.length * smoothing; // The control point position is relative to the current point
@@ -42,7 +42,7 @@ function calculatePathSmooth(dataPoints: IMetricMappedDataPoint[]): string {
 
     const bezier = computeBezierCommand(dataPoint, i, dataPoints);
     return `${generated} ${bezier}`;
-  }, `M 0 ${dataPoints[0].y}`);
+  }, `M ${dataPoints[0].x} ${dataPoints[0].y}`);
 }
 
 export default calculatePathSmooth;

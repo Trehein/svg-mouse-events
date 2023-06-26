@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { linePointGenerator } from '../data/linePointGenerator'
-import calculatePathSmooth from '../utils/smoothPath'
-import MetricChartAnimatedLine from './MetricChartAnimatedLine'
+import { linePointGenerator } from '../../data/linePointGenerator';
+import calculatePathSmooth from './utils/smoothPath';
+import AnimatedPath from './AnimatedPath';
 
-const AnimatedPath: React.FC = () => {
+
+const AnimatedPathController: React.FC = () => {
     const height: number = 500
     const width: number = 500
     const TIMING = 2000;
@@ -11,7 +12,7 @@ const AnimatedPath: React.FC = () => {
     const lineColor: string = 'rebeccapurple'
 
     const linePoints = linePointGenerator({
-        numberOfPoints: 30,
+        numberOfPoints: 3,
         yMin: height * .2,
         yMax: height * .8,
         xMin: width * .2,
@@ -27,7 +28,7 @@ const AnimatedPath: React.FC = () => {
 
     useEffect(() => {
         // get the length of the svg path
-        if (svgPath && dummyPathEl?.current) {
+        if (dummyPathEl?.current) {
           setPathLength(dummyPathEl.current.getTotalLength());
         }
       }, []);
@@ -42,7 +43,7 @@ const AnimatedPath: React.FC = () => {
             >
                 <path ref={dummyPathEl} d={svgPath} fill="none" stroke="none" />
                 {pathLength && (
-                    <MetricChartAnimatedLine
+                    <AnimatedPath
                         path={svgPath}
                         length={pathLength}
                         timing={TIMING}
@@ -56,4 +57,4 @@ const AnimatedPath: React.FC = () => {
     )
 }
 
-export default AnimatedPath
+export default AnimatedPathController

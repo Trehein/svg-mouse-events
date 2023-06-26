@@ -1,6 +1,6 @@
 import { animated, useSpring } from '@react-spring/web';
 import React, { useEffect } from 'react';
-import { ISetPlayAnimation } from '../types/metric';
+import { ISetPlayAnimation } from './types/metric';
 
 type IMetricChartAnimatedLineProps = {
   path: string;
@@ -32,13 +32,13 @@ const MetricChartAnimatedLine: React.FunctionComponent<IMetricChartAnimatedLineP
     // MetricChart calculates the length of the dummy path),
     // and we want these animations to be in sync.
     setPlayAnimation(true);
-  }, []);
+  }, [setPlayAnimation]);
 
   useEffect(() => {
     if (playAnimation) {
       spring[1]({ value: 1 });
     }
-  }, [playAnimation]);
+  }, [playAnimation, spring]);
 
   return (
     <>
