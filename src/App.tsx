@@ -3,17 +3,19 @@ import MoveLineFromOrigin from './demoComponents/MoveLineFromOrigin';
 import ShowBeyondRange from './demoComponents/ShowBeyondRange';
 import SingleBallBounce from './demoComponents/SingleBallBounce';
 import MoveMultiPath from './demoComponents/MoveMultiPath';
-import FollowClickPath from './demoComponents/FollowClickPath';
+// import FollowClickPath from './demoComponents/FollowClickPath';
+import AnimatedPath from './demoComponents/AnimatedPath';
 
 function App() {
   return (
     <div className="App">
-      <FollowClickPath />
+      <AnimatedPath />
+      {/* <FollowClickPath /> */}
       {/* <MoveMultiPath /> */}
       {/* <SingleBallBounce /> */}
-      {/* <TrackMouse />
-      <MoveLineFromOrigin />
-      <ShowBeyondRange /> */}
+      {/* <TrackMouse /> */}
+      {/* <MoveLineFromOrigin /> */}
+      {/* <ShowBeyondRange /> */}
     </div>
   );
 }
