@@ -5,5 +5,5 @@ export const calcXYCoordsOffCircleWithAngle = (angle: number, radius: number, or
     var rad = angle * Math.PI / 180;
     var x = originX + radius * Math.cos(rad);
     var y = originY - radius * Math.sin(rad);
-    return {cx: x, cy: y}
+    return {cx: x, x: x, cy: y, y: y}
 }
