@@ -8,6 +8,7 @@ import CollisionClusterController from './demoComponents/D3Force/CollisionCluste
 import WaterColorBlur from './demoComponents/WaterColorBlur/WaterColorBlur';
 import PointsOnARadius from './demoComponents/PointsOnARadius';
 import AnySidedPolygonLines from './demoComponents/AnySidedPolygonLines';
+import WaterColorBlurV2 from './demoComponents/WaterColorBlur/WaterColorBlurV2';
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
       {/* <TrackMouse /> */}
       {/* <MoveLineFromOrigin /> */}
       {/* <ShowBeyondRange /> */}
-      <WaterColorBlur />
+      <WaterColorBlurV2 />
       {/* <PointsOnARadius /> */}
       {/* <AnySidedPolygonLines /> */}
     </div>
