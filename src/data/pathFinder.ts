@@ -9,7 +9,7 @@ export const pathFinder = (pathArr: any[]) => {
     return starterString
 }
 
-export const pathFinder2 = (pathArr: any[]) => {
+export const pathFinderXY = (pathArr: any[]) => {
     let starterString = `${pathArr[0].x} ${pathArr[0].y}`
     console.log(pathArr)
     pathArr.forEach((point: {x: number, y: number}) => {

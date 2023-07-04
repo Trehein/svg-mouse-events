@@ -9,6 +9,7 @@ import WaterColorBlur from './demoComponents/WaterColorBlur/WaterColorBlur';
 import PointsOnARadius from './demoComponents/PointsOnARadius';
 import AnySidedPolygonLines from './demoComponents/AnySidedPolygonLines';
 import WaterColorBlurV2 from './demoComponents/WaterColorBlur/WaterColorBlurV2';
+import WaterColorBlurV3 from './demoComponents/WaterColorBlur/WaterColorBlurV3';
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
       {/* <TrackMouse /> */}
       {/* <MoveLineFromOrigin /> */}
       {/* <ShowBeyondRange /> */}
-      <WaterColorBlurV2 />
+      {/* <WaterColorBlurV2 /> */}
+      <WaterColorBlurV3 />
       {/* <PointsOnARadius /> */}
       {/* <AnySidedPolygonLines /> */}
     </div>
