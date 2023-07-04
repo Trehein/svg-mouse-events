@@ -4,7 +4,6 @@ import { pathFinderXY } from '../../data/pathFinder';
 import { generateRandomPoints } from '../../data/generateRandomPoints';
 
 const WaterColorBlurV3: React.FC = () => {
-    const windowHeight = window.innerHeight
     const height: number = 750
     const width: number = 750
     const maxRandomNumberForInitDeform = 25
