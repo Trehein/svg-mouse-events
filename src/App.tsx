@@ -10,7 +10,10 @@
 // import AnySidedPolygonLines from './demoComponents/AnySidedPolygonLines';
 // import WaterColorBlurV2 from './demoComponents/WaterColorBlur/WaterColorBlurV2';
 // import WaterColorBlurV3 from './demoComponents/WaterColorBlur/WaterColorBlurV3';
-import WaterColorBlurV4 from './demoComponents/WaterColorBlur/WaterColorBlurV4';
+// import WaterColorBlurV4 from './demoComponents/WaterColorBlur/WaterColorBlurV4';
+// import FollowClickPath from "./demoComponents/FollowClickPath";
+
+import DragToSlotController from "./demoComponents/DragToSlot/DragToSlotController";
 
 function App() {
   return (
@@ -25,9 +28,10 @@ function App() {
       {/* <ShowBeyondRange /> */}
       {/* <WaterColorBlurV2 /> */}
       {/* <WaterColorBlurV3 /> */}
-      <WaterColorBlurV4 />
+      {/* <WaterColorBlurV4 /> */}
       {/* <PointsOnARadius /> */}
       {/* <AnySidedPolygonLines /> */}
+      <DragToSlotController />
     </div>
   );
 }
