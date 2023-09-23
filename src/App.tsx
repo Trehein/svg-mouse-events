@@ -12,8 +12,9 @@
 // import WaterColorBlurV3 from './demoComponents/WaterColorBlur/WaterColorBlurV3';
 // import WaterColorBlurV4 from './demoComponents/WaterColorBlur/WaterColorBlurV4';
 // import FollowClickPath from "./demoComponents/FollowClickPath";
-
-import DragToSlotController from "./demoComponents/DragToSlot/DragToSlotController";
+// import DragToSlotController from "./demoComponents/DragToSlot/DragToSlotController";
+// import FiscalDatePickerController from "./demoComponents/FiscalDatePicker/FiscalDatePickerController";
+import OverlappingRadarChartController from "./demoComponents/OverlappingRadarChart/OverlappingRadarChartController";
 
 function App() {
   return (
@@ -31,7 +32,9 @@ function App() {
       {/* <WaterColorBlurV4 /> */}
       {/* <PointsOnARadius /> */}
       {/* <AnySidedPolygonLines /> */}
-      <DragToSlotController />
+      {/* <DragToSlotController /> */}
+      {/* <FiscalDatePickerController /> */}
+      <OverlappingRadarChartController />
     </div>
   );
 }
