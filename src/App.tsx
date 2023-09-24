@@ -14,7 +14,8 @@
 // import FollowClickPath from "./demoComponents/FollowClickPath";
 // import DragToSlotController from "./demoComponents/DragToSlot/DragToSlotController";
 // import FiscalDatePickerController from "./demoComponents/FiscalDatePicker/FiscalDatePickerController";
-import OverlappingRadarChartController from "./demoComponents/OverlappingRadarChart/OverlappingRadarChartController";
+// import OverlappingRadarChartController from "./demoComponents/OverlappingRadarChart/OverlappingRadarChartController";
+import VisxRadarChart from "./demoComponents/VisxRadarChart/VisxRadarChart";
 
 function App() {
   return (
@@ -34,7 +35,8 @@ function App() {
       {/* <AnySidedPolygonLines /> */}
       {/* <DragToSlotController /> */}
       {/* <FiscalDatePickerController /> */}
-      <OverlappingRadarChartController />
+      {/* <OverlappingRadarChartController /> */}
+      <VisxRadarChart width={600} height={600} />
     </div>
   );
 }
