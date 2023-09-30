@@ -15,7 +15,9 @@
 // import DragToSlotController from "./demoComponents/DragToSlot/DragToSlotController";
 // import FiscalDatePickerController from "./demoComponents/FiscalDatePicker/FiscalDatePickerController";
 // import OverlappingRadarChartController from "./demoComponents/OverlappingRadarChart/OverlappingRadarChartController";
-import VisxRadarChart from "./demoComponents/VisxRadarChart/VisxRadarChart";
+// import VisxRadarChart from "./demoComponents/VisxRadarChart/VisxRadarChart";
+
+import Controller from "./demoComponents/LinkedStackedHistogram/Controller";
 
 function App() {
   return (
@@ -36,7 +38,8 @@ function App() {
       {/* <DragToSlotController /> */}
       {/* <FiscalDatePickerController /> */}
       {/* <OverlappingRadarChartController /> */}
-      <VisxRadarChart width={600} height={600} />
+      {/* <VisxRadarChart width={600} height={600} /> */}
+      <Controller />
     </div>
   );
 }

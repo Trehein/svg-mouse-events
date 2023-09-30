@@ -4,6 +4,7 @@ import { scaleLinear } from '@visx/scale';
 import { Point } from '@visx/point';
 import { Line, LineRadial } from '@visx/shape';
 import { radarData } from './radarData';
+import * as d3 from 'd3';
 
 export type RadarDataType = {
     labelText: string,
@@ -20,8 +21,6 @@ export const background = '#FAF7E9';
 
 const degrees = 360;
 const data: RadarDataType[] = radarData()
-
-console.log(data)
 
 const hoursActual = (d: RadarDataType) => d.hoursActual
 
@@ -46,9 +45,7 @@ function genPolygonPoints<Datum>(
     const step = (Math.PI * 2) / dataArray.length;
     const points: { x: number; y: number, dollarsActual: number, dollarsScheduled: number, hoursActual: number, hoursScheduled: number }[] = new Array(dataArray.length).fill({ x: 0, y: 0 });
     
-    const pointString: string = new Array(dataArray.length + 1).fill('').reduce((res, _, i) => {
-      console.log(dataArray[i - 1])
-      
+    const pointString: string = new Array(dataArray.length + 1).fill('').reduce((res, _, i) => {      
       if (i > dataArray.length) return res;
       const xVal = scale(getValue(dataArray[i - 1])) * Math.sin(i * step);
       const yVal = scale(getValue(dataArray[i - 1])) * Math.cos(i * step);
@@ -67,7 +64,7 @@ function genPolygonPoints<Datum>(
     return { points, pointString };
   }
 
-  const defaultMargin = { top: 40, left: 80, right: 80, bottom: 80 };
+const defaultMargin = { top: 40, left: 80, right: 80, bottom: 80 };
 
 export type RadarProps = {
   width: number;
@@ -81,6 +78,10 @@ const VisxRadarChart: React.FC<RadarProps> = ({ width, height, levels = 5, margi
   const yMax = height - margin.top - margin.bottom;
   const radius = Math.min(xMax, yMax) / 2;
 
+  // todo - pass in dynamic field keys
+  const maxValue = d3.max(data, (d: any) => d.hoursActual)
+  console.log('maxValue', maxValue)
+  
   const radialScale = scaleLinear<number>({
     range: [0, Math.PI * 2],
     domain: [degrees, 0],
