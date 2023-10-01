@@ -9,15 +9,13 @@ export type ControllerState = {
 
 export type PayrollPhaseData = {
     phase: string
-    data: {
-        bopus: number
-        fitting: number
-        register: number
-        restock: number
-        signs: number
-        trucks: number
-        visuals: number
-    }
+    bopus: number
+    fitting: number
+    register: number
+    restock: number
+    signs: number
+    trucks: number
+    visuals: number
 }
 
 const Controller = () => {
@@ -31,7 +29,12 @@ const Controller = () => {
         <div style={{ height: '75vh', width: '100%' }}>
           <ParentSize className="graph-container" debounceTime={10}>
             {({ width: visWidth, height: visHeight }) => (
-                <LinkedHistogram data={state.data} width={visWidth} height={visHeight} />        
+                <LinkedHistogram 
+                  data={state.data} 
+                  width={visWidth} 
+                  height={visHeight} 
+                  barKeyField={'phase'}
+                />        
             )}
           </ParentSize> 
         </div>
