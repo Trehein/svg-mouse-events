@@ -1,7 +1,8 @@
 import { ParentSize } from '@visx/responsive';
 import { useState } from 'react'
-import LinkedHistogram from './LinkedHistogram';
+// import LinkedHistogram from './LinkedHistogram';
 import { generatePayrollPhaseData } from './dataGen';
+import LinkedHistogramV2 from './LinkedHistogramV2';
 
 export type ControllerState = {
     data: PayrollPhaseData[]
@@ -29,7 +30,7 @@ const Controller = () => {
         <div style={{ height: '75vh', width: '100%' }}>
           <ParentSize className="graph-container" debounceTime={10}>
             {({ width: visWidth, height: visHeight }) => (
-                <LinkedHistogram 
+                <LinkedHistogramV2 
                   data={state.data} 
                   width={visWidth} 
                   height={visHeight} 

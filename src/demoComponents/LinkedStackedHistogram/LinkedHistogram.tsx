@@ -1,8 +1,7 @@
-import { scaleBand, scaleLinear, scaleOrdinal } from '@visx/scale';
+import { scaleBand, scaleLinear } from '@visx/scale';
 import { Grid } from '@visx/grid';
 import { Group } from '@visx/group';
 import { AxisBottom, AxisLeft } from '@visx/axis'
-
 
 export type LinkedHistogramProps ={
     data: any[],
@@ -41,9 +40,9 @@ export const calcBarTotals: (data: any, barKeyField: string) => number[] = (data
     return returnArr
 }
 
-
 const LinkedHistogram: React.FC<LinkedHistogramProps> = (props) => {
     const {data, height, width, barKeyField} = props
+    const barHeight = height * (data.length * .1)
 
     const barKeys: string[] = data.map((data: any) => data[barKeyField])
 
@@ -62,7 +61,8 @@ const LinkedHistogram: React.FC<LinkedHistogramProps> = (props) => {
     // data min max
 
     // accessor
-    const yAccessor = (d: any) => d.phase
+    const yAccessor = (d: any) => d[barKeyField]
+    const yAccessorBand = (d: any) => d[barKeyField]
 
     // scales
     const xScale = scaleLinear<number>({
@@ -72,14 +72,14 @@ const LinkedHistogram: React.FC<LinkedHistogramProps> = (props) => {
 
     const yScale = scaleBand<string>({
         domain: data.map(yAccessor),
-        padding: 0.2,
+        padding: .75
     });
 
     xScale.rangeRound([0, xMax]);
     yScale.rangeRound([yMax, 0])
 
-    console.log('barKeys', barKeys)
-    console.log(calcBarTotals(data, barKeyField))
+    // console.log('barKeys', barKeys)
+    // console.log(calcBarTotals(data, barKeyField))
 
     return (
         <svg height={height} width={width}>
@@ -132,10 +132,23 @@ const LinkedHistogram: React.FC<LinkedHistogramProps> = (props) => {
                     onClick={() => alert(`${d.taskType} - Complete - ${d.overdue}`)}
                 />)
                 })} */}
+                {data.map((d: any, index: number) => {
+                return (<rect 
+                    key={index}
+                    x={0}
+                    y={yScale(d[barKeyField])}
+                    width={xScale(d.bopus)}
+                    height={yScale.bandwidth()}
+                    fill={'salmon'}  
+                    cursor={'pointer'}
+                    onClick={() => alert(`${d.taskType} - Complete - ${d.overdue}`)}
+                />)
+                })}
+
                 <AxisBottom 
                 top={yMax}
                 scale={xScale}
-                numTicks={width < 500 ? 5 : 10}
+                numTicks={10}
                 stroke={'black'}
                 tickStroke={'black'}
                 tickLabelProps={() => axisBottomTickLabelProps}
