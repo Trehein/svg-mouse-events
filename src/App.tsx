@@ -16,8 +16,9 @@
 // import FiscalDatePickerController from "./demoComponents/FiscalDatePicker/FiscalDatePickerController";
 // import OverlappingRadarChartController from "./demoComponents/OverlappingRadarChart/OverlappingRadarChartController";
 // import VisxRadarChart from "./demoComponents/VisxRadarChart/VisxRadarChart";
+// import Controller from "./demoComponents/LinkedStackedHistogram/Controller";
 
-import Controller from "./demoComponents/LinkedStackedHistogram/Controller";
+import Controller from "./demoComponents/IconRotator/Controller";
 
 function App() {
   return (
