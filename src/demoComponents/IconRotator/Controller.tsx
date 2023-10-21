@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import IconRotator from './IconRotator'
+import {FaArrowRight, FaArrowAltCircleRight } from 'react-icons/fa'
+
 
 const Controller: React.FC = () => {
     const [state, setState] = useState({})
 
-
-
     return (
         <div>
             <div>Number Here</div>
-            <IconRotator><div style={{height: 50, width: 50, backgroundColor: 'orange'}}></div></IconRotator>
+            <IconRotator><FaArrowRight /></IconRotator>
         </div>
     )
 }

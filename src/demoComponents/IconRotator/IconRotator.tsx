@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 import { animated, useSpring } from '@react-spring/web'
+import {BsArrowRightCircle} from 'react-icons/bs'
+import {FaArrowRight, FaArrowAltCircleRight } from 'react-icons/fa'
+import { IconContext } from "react-icons";
+import useMeasure from 'react-use-measure';
 
 
 export type IconRotatorProps = {
@@ -8,12 +12,13 @@ export type IconRotatorProps = {
 
 const IconRotator: React.FC<IconRotatorProps> = (props) => {
     const [isPassive, setIsPassive] = useState(false)
-
+    const [ref, bounds] = useMeasure()
     const {children} = props
 
       const springProps = useSpring({
+
         to: { 
-            rotateZ: isPassive ? 0 : -45
+            rotateZ: isPassive ? 0 : -90
         },
         config: {duration: 500},
         reverse: isPassive
@@ -28,11 +33,17 @@ const IconRotator: React.FC<IconRotatorProps> = (props) => {
     // })
     // }
 
+    console.log('bounds', bounds.height)
+
     
     
     return (
-        <animated.div style={{...springProps, width: 'fit-content'}} onClick={() => setIsPassive(!isPassive)}>
-            {children}
+        <animated.div style={{...springProps, width: 'fit-content', height: bounds.height}} onClick={() => setIsPassive(!isPassive)}>
+            <IconContext.Provider value={{ color: 'orange', size: '5em' }}>
+                <div ref={ref}>
+                    {children}
+                </div>
+            </IconContext.Provider>
         </animated.div>
     )
 }
