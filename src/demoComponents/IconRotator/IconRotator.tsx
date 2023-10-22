@@ -1,49 +1,45 @@
-import React, { useState } from 'react'
-import { animated, useSpring } from '@react-spring/web'
+import React from 'react'
+import { animated, useSpring, useSpringValue } from '@react-spring/web'
 import {BsArrowRightCircle} from 'react-icons/bs'
 import {FaArrowRight, FaArrowAltCircleRight } from 'react-icons/fa'
 import { IconContext } from "react-icons";
 import useMeasure from 'react-use-measure';
+import { easings } from '@react-spring/web'
 
 
 export type IconRotatorProps = {
-    children: React.ReactNode
+    children: React.ReactNode,
+    rotationDegrees: number,
+    iconColor: string
 }
 
 const IconRotator: React.FC<IconRotatorProps> = (props) => {
-    const [isPassive, setIsPassive] = useState(false)
     const [ref, bounds] = useMeasure()
-    const {children} = props
+    const {children, rotationDegrees, iconColor} = props
+    console.log(iconColor)
 
-      const springProps = useSpring({
+    const [springProps] = useSpring(
+        () => ({
+            from: { rotateZ: 0, color: iconColor, scale: '90%' },
+            to: { rotateZ: rotationDegrees, color: iconColor, scale: '100%' },
+            config: {
+                // duration: 500,
+                mass: 4.32,
+                tension: 471,
+                friction: 26
+                // easing: easings.easeInOutBack
+            },
+        }),
+        [rotationDegrees, iconColor]
+      )
 
-        to: { 
-            rotateZ: isPassive ? 0 : -90
-        },
-        config: {duration: 500},
-        reverse: isPassive
-      })
-
-    // const handleClick = () => {
-    // api.start({
-    //     y: 20,
-    //     config: {
-    //     friction: 10,
-    //     },
-    // })
-    // }
-
-    console.log('bounds', bounds.height)
-
-    
-    
     return (
-        <animated.div style={{...springProps, width: 'fit-content', height: bounds.height}} onClick={() => setIsPassive(!isPassive)}>
-            <IconContext.Provider value={{ color: 'orange', size: '5em' }}>
-                <div ref={ref}>
+        <animated.div style={{...springProps, width: 'fit-content', height: bounds.height}}>
+            <div ref={ref}>
+                <IconContext.Provider value={{ size: '5em' }}>
                     {children}
-                </div>
-            </IconContext.Provider>
+                </IconContext.Provider>
+            </div>
         </animated.div>
     )
 }
