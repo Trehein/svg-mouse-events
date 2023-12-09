@@ -18,7 +18,10 @@
 // import VisxRadarChart from "./demoComponents/VisxRadarChart/VisxRadarChart";
 // import Controller from "./demoComponents/LinkedStackedHistogram/Controller";
 
-import Controller from "./demoComponents/IconRotator/Controller";
+
+// import Controller from "./demoComponents/IconRotator/Controller";
+import Controller from "./demoComponents/IconPopEffect/Controller";
+// import Controller from './demoComponents/IconColorMorph/Controller'
 
 function App() {
   return (

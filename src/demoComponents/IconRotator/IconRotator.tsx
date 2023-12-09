@@ -1,10 +1,7 @@
 import React from 'react'
-import { animated, useSpring, useSpringValue } from '@react-spring/web'
-import {BsArrowRightCircle} from 'react-icons/bs'
-import {FaArrowRight, FaArrowAltCircleRight } from 'react-icons/fa'
+import { animated, useSpring } from '@react-spring/web'
 import { IconContext } from "react-icons";
 import useMeasure from 'react-use-measure';
-import { easings } from '@react-spring/web'
 
 
 export type IconRotatorProps = {
