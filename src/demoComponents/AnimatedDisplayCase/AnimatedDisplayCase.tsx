@@ -41,33 +41,33 @@ export const animatedDisplayCaseStyles = () => {
 
 export type DemoComponentData = {
   title: string,
-  Component: React.ReactNode
+  url: string
 }
 
 export const demoComponentData: DemoComponentData[] = [
   {
     title: '',
-    Component: <AnimatedPathController />
+    url: '/animatedPath'
   },
   {
     title: '',
-    Component: <AnimatedPathController />
+    url: '/animatedPath'
   },
   {
     title: '',
-    Component: <AnimatedPathController />
+    url: '/animatedPath'
   },
   {
     title: '',
-    Component: <AnimatedPathController />
+    url: '/animatedPath'
   },
   {
     title: '',
-    Component: <AnimatedPathController />
+    url: '/animatedPath'
   },
   {
     title: '',
-    Component: <AnimatedPathController />
+    url: '/animatedPath'
   },
 ]
 
