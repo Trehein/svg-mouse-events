@@ -18,14 +18,17 @@
 // import VisxRadarChart from "./demoComponents/VisxRadarChart/VisxRadarChart";
 // import Controller from "./demoComponents/LinkedStackedHistogram/Controller";
 
+import AnimatedDisplayCase from "./demoComponents/AnimatedDisplayCase/AnimatedDisplayCase";
+
 
 // import Controller from "./demoComponents/IconRotator/Controller";
-import Controller from "./demoComponents/IconPopEffect/Controller";
+// import Controller from "./demoComponents/IconPopEffect/Controller";
 // import Controller from './demoComponents/IconColorMorph/Controller'
 
 function App() {
   return (
     <div className="App">
+      <AnimatedDisplayCase />
       {/* <AnimatedPathController /> */}
       {/* <CollisionClusterController /> */}
       {/* <FollowClickPath /> */}
@@ -43,7 +46,7 @@ function App() {
       {/* <FiscalDatePickerController /> */}
       {/* <OverlappingRadarChartController /> */}
       {/* <VisxRadarChart width={600} height={600} /> */}
-      <Controller />
+      {/* <Controller /> */}
     </div>
   );
 }
