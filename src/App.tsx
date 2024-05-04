@@ -3,7 +3,8 @@
 // import ShowBeyondRange from './demoComponents/ShowBeyondRange';
 // import SingleBallBounce from './demoComponents/SingleBallBounce';
 // import MoveMultiPath from './demoComponents/MoveMultiPath';
-import AnimatedPathController from './demoComponents/AnimatedPath/AnimatedPathController';
+// import AnimatedPathController from './demoComponents/AnimatedPath/AnimatedPathController';
+// import { BallMoveAlongPathController } from './demoComponents/BallMoveAlongPath/BallMoveAlongPathController';
 // import CollisionClusterController from './demoComponents/D3Force/CollisionCluster/CollisionClusterController';
 // import WaterColorBlur from './demoComponents/WaterColorBlur/WaterColorBlur';
 // import PointsOnARadius from './demoComponents/PointsOnARadius';
@@ -18,6 +19,8 @@ import AnimatedPathController from './demoComponents/AnimatedPath/AnimatedPathCo
 // import VisxRadarChart from "./demoComponents/VisxRadarChart/VisxRadarChart";
 // import Controller from "./demoComponents/LinkedStackedHistogram/Controller";
 
+import SliderSelector from "./demoComponents/SliderSelector/SliderSelector";
+
 // import AnimatedDisplayCase from "./demoComponents/AnimatedDisplayCase/AnimatedDisplayCase";
 
 
@@ -29,7 +32,9 @@ function App() {
   return (
     <div className="App">
       {/* <AnimatedDisplayCase /> */}
-      <AnimatedPathController />
+      {/* <BallMoveAlongPathController /> */}
+      {/* <AnimatedPathController /> */}
+      <SliderSelector />
       {/* <CollisionClusterController /> */}
       {/* <FollowClickPath /> */}
       {/* <MoveMultiPath /> */}
