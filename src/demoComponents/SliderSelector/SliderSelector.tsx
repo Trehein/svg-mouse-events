@@ -19,15 +19,8 @@ const SliderSelector: React.FC = () => {
         type="number" 
         max={2500}
         min={2500}
-        step={100}
         value={selectedValue}
-        onChange={
-          (e) => {
-            if(e.target.value.length) {
-              setSelectedValue(e.target.value.length ? parseInt(e.target.value) : 0)
-            }
-          }
-        }
+        onChange={(e) => setSelectedValue(parseInt(e.target.value))}
       />
       {selectedValue}
 
