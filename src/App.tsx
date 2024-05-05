@@ -18,15 +18,14 @@
 // import OverlappingRadarChartController from "./demoComponents/OverlappingRadarChart/OverlappingRadarChartController";
 // import VisxRadarChart from "./demoComponents/VisxRadarChart/VisxRadarChart";
 // import Controller from "./demoComponents/LinkedStackedHistogram/Controller";
-
-import SliderSelector from "./demoComponents/SliderSelector/SliderSelector";
-
+// import SliderSelector from "./demoComponents/SliderSelector/SliderSelector";
 // import AnimatedDisplayCase from "./demoComponents/AnimatedDisplayCase/AnimatedDisplayCase";
-
-
 // import Controller from "./demoComponents/IconRotator/Controller";
 // import Controller from "./demoComponents/IconPopEffect/Controller";
 // import Controller from './demoComponents/IconColorMorph/Controller'
+
+import WordRoller from "./demoComponents/WordRoller/WordRoller";
+
 
 function App() {
   return (
@@ -34,7 +33,7 @@ function App() {
       {/* <AnimatedDisplayCase /> */}
       {/* <BallMoveAlongPathController /> */}
       {/* <AnimatedPathController /> */}
-      <SliderSelector />
+      {/* <SliderSelector /> */}
       {/* <CollisionClusterController /> */}
       {/* <FollowClickPath /> */}
       {/* <MoveMultiPath /> */}
@@ -52,6 +51,7 @@ function App() {
       {/* <OverlappingRadarChartController /> */}
       {/* <VisxRadarChart width={600} height={600} /> */}
       {/* <Controller /> */}
+      <WordRoller />
     </div>
   );
 }
