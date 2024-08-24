@@ -23,9 +23,14 @@
 // import Controller from "./demoComponents/IconRotator/Controller";
 // import Controller from "./demoComponents/IconPopEffect/Controller";
 // import Controller from './demoComponents/IconColorMorph/Controller'
+// import WordRoller from "./demoComponents/WordRoller/WordRoller";
 
-import WordRoller from "./demoComponents/WordRoller/WordRoller";
-
+import Heatmap from "./demoComponents/Heatmap/Heatmap";
+const demoData = Array.from({ length: 42 }, (_, i) => ({
+  date: `2024-08-${String(i + 1).padStart(2, '0')}`,
+  count: Math.floor(Math.random() * 2000) - 1000,
+  hours: Math.floor(Math.random() * 200) - 100,
+}))
 
 function App() {
   return (
@@ -51,7 +56,10 @@ function App() {
       {/* <OverlappingRadarChartController /> */}
       {/* <VisxRadarChart width={600} height={600} /> */}
       {/* <Controller /> */}
-      <WordRoller />
+      {/* <WordRoller /> */}
+      <div style={{height: 600, width: 600}}>
+        <Heatmap titleText={"August Heatmap"} data={demoData} valueAccessKey={'count'} />
+      </div>
     </div>
   );
 }
