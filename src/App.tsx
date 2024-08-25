@@ -25,12 +25,7 @@
 // import Controller from './demoComponents/IconColorMorph/Controller'
 // import WordRoller from "./demoComponents/WordRoller/WordRoller";
 
-import Heatmap from "./demoComponents/Heatmap/Heatmap";
-const demoData = Array.from({ length: 35 }, (_, i) => ({
-  date: `2024-08-${String(i + 1).padStart(2, '0')}`,
-  count: Math.floor(Math.random() * 2000) - 1000,
-  hours: Math.floor(Math.random() * 200) - 100,
-}))
+import DemoHeatmapController from "./DemoControllers/DemoHeatmapController";
 
 function App() {
   return (
@@ -57,9 +52,7 @@ function App() {
       {/* <VisxRadarChart width={600} height={600} /> */}
       {/* <Controller /> */}
       {/* <WordRoller /> */}
-      <div style={{height: 600, width: 600}}>
-        <Heatmap titleText={"August Heatmap"} data={demoData} valueAccessKey={'count'} />
-      </div>
+      <DemoHeatmapController />
     </div>
   );
 }

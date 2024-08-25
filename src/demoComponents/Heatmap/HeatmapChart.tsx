@@ -34,38 +34,28 @@ const HeatmapChart: React.FC<HeatmapChartProps> = (props) => {
 
   const binWidth = innerWidth / numberOfColumns
   const binHeight = innerHeight / Math.ceil(data.length / numberOfColumns)
-
-  console.log(binHeight)
-  console.log(binWidth)
-
-  const [open, setOpen] = useState(false)
-
-  const trail = useTrail(data.length, {
-    config: { mass: 5, tension: 2000, friction: 200 },
-    from: {
-      fill: 'orange'
-    },
-    to: {
-      fill: 'purple'
-    }
-  })
+  
+  const translation = `${150}px,0px,0` // needs to be hard coded number
 
   const transitions = useTransition(data, {
     from: { 
       fillOpacity: 0,
-      fill: 'aqua' 
+      fill: 'aqua',
+      transform: `translate3d(${translation})`
     },
     enter: { 
       fillOpacity: 1,
-      fill: 'rebeccapurple' 
+      fill: 'rebeccapurple',
+      transform: `translate3d(0px,0px,0)` 
     },
     leave: { 
       fillOpacity: 0,
-      fill: 'salmon' 
+      fill: 'salmon',
+      transform: `translate3d(-${translation})` 
     },
     trail: 100,
     config: {
-      duration: 1000
+      duration: 300
     }
   })
 
@@ -82,6 +72,7 @@ const HeatmapChart: React.FC<HeatmapChartProps> = (props) => {
             y={Math.floor(index / numberOfColumns) * binHeight}
             stroke={'white'}
             strokeWidth={2}
+            // paintOrder={'stroke'} // stroke is auto centered but drawn second by default, 1st in paint order puts half under the fill
           />
         ))}
       </g>
