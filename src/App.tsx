@@ -26,7 +26,7 @@
 // import WordRoller from "./demoComponents/WordRoller/WordRoller";
 
 import Heatmap from "./demoComponents/Heatmap/Heatmap";
-const demoData = Array.from({ length: 42 }, (_, i) => ({
+const demoData = Array.from({ length: 35 }, (_, i) => ({
   date: `2024-08-${String(i + 1).padStart(2, '0')}`,
   count: Math.floor(Math.random() * 2000) - 1000,
   hours: Math.floor(Math.random() * 200) - 100,
