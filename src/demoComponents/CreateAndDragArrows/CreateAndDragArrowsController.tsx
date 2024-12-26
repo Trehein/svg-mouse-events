@@ -29,20 +29,14 @@ const CreateAndDragArrowsController: React.FC = () => {
   const [newArrow, setNewArrow] = useState<DraggableArrow>({start: {x: 0, y: 0}, end: {x: 0, y: 0}, curvePoint: undefined})
   const [isCreatingArrow, setIsCreatingArrow] = useState<boolean>(false)
 
-  const handleOnStartClick = (e: any) => {
-
-
-
-    // todo - once new arrow created
-    // const clicksSnapshot = savedArrows
-    // clicksSnapshot.push({start})
-    // setSavedArrows(clicksSnapshot)
-  }
-
   const handleOnClick = (e: any) => {
     if(isCreatingArrow) {
       setNewArrow({...newArrow, end: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}})
+      const savedArrowsSnapshot = savedArrows
+      savedArrowsSnapshot.push(newArrow)
+      
       setIsCreatingArrow(false)
+      setSavedArrows(savedArrowsSnapshot)
     } else {
       setNewArrow({start: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}, end: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}, curvePoint: undefined})
       setIsCreatingArrow(true)
@@ -55,7 +49,6 @@ const CreateAndDragArrowsController: React.FC = () => {
 
     }
   }
-
 
   return (
     <div>
@@ -92,7 +85,6 @@ const CreateAndDragArrowsController: React.FC = () => {
                   handleOnClick(e)
                 }}
                 onMouseMove={(e) => {
-                    console.log(e)
                     setMousePosition({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
                     handleOnMouseMove(e)
                 }}
@@ -111,13 +103,22 @@ const CreateAndDragArrowsController: React.FC = () => {
             }
 
 
-            {/* <path
-              d={`M ${width * (1/3)} ${height * (2/3)} Q ${width * (1/2)} ${height * (1/3)} ${width * (2/3)} ${height * (2/3)}`}
-              stroke='orange'
-              strokeWidth={4}
-              fill="none"
-              marker-end="url(#triangle)"
-            /> */}
+            {
+              savedArrows.map((savedArrow: DraggableArrow) => {
+                return (
+                  <path 
+                    d={pointsToPath(savedArrow)}
+                    stroke='blue'
+                    strokeWidth={4}
+                    fill="none"
+                    marker-end="url(#triangle)"
+                    // onClick={(e) => {
+                    //   handleOnClick(e)
+                    // }}
+                  />
+                )
+              })
+            }
 
 
         </svg>
