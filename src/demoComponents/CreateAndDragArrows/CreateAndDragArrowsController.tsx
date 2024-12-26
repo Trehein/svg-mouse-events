@@ -1,23 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { pointsToPath } from "./utils/pointsToPath";
+import DraggableArrow, { Arrow } from "./DraggableArrow";
 
 export type AnchorPoint = {
   x: number,
   y: number
-}
-
-export type DraggableArrow = {
-  start: AnchorPoint,
-  end: AnchorPoint,
-  curvePoint: AnchorPoint | undefined
-}
-
-export const pointsToPath = (draggableArrow: DraggableArrow) => {
-  if(!draggableArrow.curvePoint) {
-    return `M ${draggableArrow.start.x} ${draggableArrow.start.y} ${draggableArrow.end.x} ${draggableArrow.end.y}`
-  } else {
-    // todo update with curve Q logic
-    return `M ${draggableArrow.start.x} ${draggableArrow.start.y} ${draggableArrow.end.x} ${draggableArrow.end.y}`
-  }
 }
 
 const CreateAndDragArrowsController: React.FC = () => {
@@ -25,8 +12,8 @@ const CreateAndDragArrowsController: React.FC = () => {
   const width: number = 1000
 
   const [mousePosition, setMousePosition] = useState({x: 0, y: 0})
-  const [savedArrows, setSavedArrows] = useState<DraggableArrow[]>([])
-  const [newArrow, setNewArrow] = useState<DraggableArrow>({start: {x: 0, y: 0}, end: {x: 0, y: 0}, curvePoint: undefined})
+  const [savedArrows, setSavedArrows] = useState<Arrow[]>([])
+  const [newArrow, setNewArrow] = useState<Arrow>({start: {x: 0, y: 0}, end: {x: 0, y: 0}, curvePoint: undefined})
   const [isCreatingArrow, setIsCreatingArrow] = useState<boolean>(false)
 
   const handleOnClick = (e: any) => {
@@ -54,6 +41,16 @@ const CreateAndDragArrowsController: React.FC = () => {
     setSavedArrows([])
   }
 
+  const removePrevArrow = () => {
+    const savedArrowsSnapshot = savedArrows
+    savedArrowsSnapshot.pop()
+    setSavedArrows(savedArrowsSnapshot)
+  }
+
+  useEffect(() => {
+
+  }, [savedArrows])
+
   console.log('savedArrows', savedArrows)
 
   return (
@@ -66,7 +63,7 @@ const CreateAndDragArrowsController: React.FC = () => {
         </div>
         <div style={{display: 'flex'}}>
           <button onClick={() => handleOnClear()}>Clear</button>
-          <button>Clear</button>
+          <button onClick={() => removePrevArrow()}>Remove Prev</button>
         </div>
         <svg
             height={height}
@@ -103,7 +100,7 @@ const CreateAndDragArrowsController: React.FC = () => {
               <path 
                 d={pointsToPath(newArrow)}
                 stroke='orange'
-                strokeWidth={4}
+                strokeWidth={3}
                 fill="none"
                 marker-end="url(#triangle)"
                 onClick={(e) => {
@@ -112,20 +109,32 @@ const CreateAndDragArrowsController: React.FC = () => {
               />
             }
 
-
             {savedArrows.length > 0 &&
-              savedArrows.map((savedArrow: DraggableArrow) => {
+              savedArrows.map((savedArrow: Arrow) => {
                 return (
-                  <path 
-                    d={pointsToPath(savedArrow)}
-                    stroke='blue'
-                    strokeWidth={4}
-                    fill="none"
-                    marker-end="url(#triangle)"
-                    // onClick={(e) => {
-                    //   handleOnClick(e)
-                    // }}
-                  />
+                  // <DraggableArrow arrow={savedArrow} />
+                      <g>
+                        <path 
+                          d={pointsToPath(savedArrow)}
+                          stroke='blue'
+                          strokeWidth={8}
+                          fill="none"
+                          // onClick={(e) => {
+                          //   handleOnClick(e)
+                          // }}
+                        />
+                        <path 
+                          d={pointsToPath(savedArrow)}
+                          stroke='yellow'
+                          strokeWidth={3}
+                          fill="none"
+                          marker-end="url(#triangle)"
+                          // marker-end="url(#triangle)"
+                          // onClick={(e) => {
+                          //   handleOnClick(e)
+                          // }}
+                        />
+                      </g>
                 )
               })
             }
