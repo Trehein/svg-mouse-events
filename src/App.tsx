@@ -25,6 +25,7 @@
 // import Controller from './demoComponents/IconColorMorph/Controller'
 // import WordRoller from "./demoComponents/WordRoller/WordRoller";
 
+import CreateAndDragArrowsController from "./demoComponents/CreateAndDragArrows/CreateAndDragArrowsController";
 import DemoHeatmapController from "./DemoControllers/DemoHeatmapController";
 
 function App() {
@@ -52,7 +53,8 @@ function App() {
       {/* <VisxRadarChart width={600} height={600} /> */}
       {/* <Controller /> */}
       {/* <WordRoller /> */}
-      <DemoHeatmapController />
+      {/* <DemoHeatmapController /> */}
+      <CreateAndDragArrowsController />
     </div>
   );
 }
