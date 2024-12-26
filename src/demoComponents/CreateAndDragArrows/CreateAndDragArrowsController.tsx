@@ -50,6 +50,12 @@ const CreateAndDragArrowsController: React.FC = () => {
     }
   }
 
+  const handleOnClear = () => {
+    setSavedArrows([])
+  }
+
+  console.log('savedArrows', savedArrows)
+
   return (
     <div>
         <div>
@@ -57,6 +63,10 @@ const CreateAndDragArrowsController: React.FC = () => {
         </div>
         <div>
             yVal: {mousePosition.y}
+        </div>
+        <div style={{display: 'flex'}}>
+          <button onClick={() => handleOnClear()}>Clear</button>
+          <button>Clear</button>
         </div>
         <svg
             height={height}
@@ -103,7 +113,7 @@ const CreateAndDragArrowsController: React.FC = () => {
             }
 
 
-            {
+            {savedArrows.length > 0 &&
               savedArrows.map((savedArrow: DraggableArrow) => {
                 return (
                   <path 
