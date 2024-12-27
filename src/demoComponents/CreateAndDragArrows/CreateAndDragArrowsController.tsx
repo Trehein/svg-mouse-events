@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { pointsToPath } from "./utils/pointsToPath";
-import DraggableArrow, { Arrow } from "./DraggableArrow";
+import { Arrow } from "./DraggableArrow";
+import SavedArrows from "./SavedArrows";
 
 export type AnchorPoint = {
   x: number,
@@ -15,6 +16,8 @@ const CreateAndDragArrowsController: React.FC = () => {
   const [savedArrows, setSavedArrows] = useState<Arrow[]>([])
   const [newArrow, setNewArrow] = useState<Arrow>({start: {x: 0, y: 0}, end: {x: 0, y: 0}, curvePoint: undefined})
   const [isCreatingArrow, setIsCreatingArrow] = useState<boolean>(false)
+  const [triggerTime, setTriggerTime] = useState<number>(Date.now().valueOf())
+
 
   const handleOnClick = (e: any) => {
     if(isCreatingArrow) {
@@ -45,13 +48,17 @@ const CreateAndDragArrowsController: React.FC = () => {
     const savedArrowsSnapshot = savedArrows
     savedArrowsSnapshot.pop()
     setSavedArrows(savedArrowsSnapshot)
+    fireTriggerTime()
+  }
+
+  const fireTriggerTime = () => {
+    setTriggerTime(Date.now().valueOf())
   }
 
   useEffect(() => {
 
-  }, [savedArrows])
-
-  console.log('savedArrows', savedArrows)
+  }, [triggerTime])
+  // console.log('savedArrows', savedArrows.length)
 
   return (
     <div>
@@ -110,33 +117,7 @@ const CreateAndDragArrowsController: React.FC = () => {
             }
 
             {savedArrows.length > 0 &&
-              savedArrows.map((savedArrow: Arrow) => {
-                return (
-                  // <DraggableArrow arrow={savedArrow} />
-                    <g>
-                      <path 
-                        d={pointsToPath(savedArrow)}
-                        stroke='blue'
-                        strokeWidth={8}
-                        fill="none"
-                        // onClick={(e) => {
-                        //   handleOnClick(e)
-                        // }}
-                      />
-                      <path 
-                        d={pointsToPath(savedArrow)}
-                        stroke='yellow'
-                        strokeWidth={3}
-                        fill="none"
-                        marker-end="url(#triangle)"
-                        // marker-end="url(#triangle)"
-                        // onClick={(e) => {
-                        //   handleOnClick(e)
-                        // }}
-                      />
-                    </g>
-                )
-              })
+              <SavedArrows savedArrows={savedArrows} />
             }
 
 
