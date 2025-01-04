@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { AnchorPoint } from './CreateAndDragArrowsController'
 import { pointsToPath } from './utils/pointsToPath'
+import { colorPaletteStore } from './colorPaletteStore'
 
 export type Arrow = {
   start: AnchorPoint,
@@ -9,34 +10,34 @@ export type Arrow = {
 }
 
 export type DraggableArrowProps = {
-  arrow: Arrow
+  arrow: Arrow,
 }
-
-
 
 const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
   const {arrow} = props
+  const colors: any = colorPaletteStore((state: any) => state.colors)
+  const [isHovering, setIsHovering] = useState<boolean>(false)
+  const [isSelected, setIsSelected] = useState<boolean>(false)
+
+  const handleOnMouseOver = () => {
+    setIsHovering(true)
+  }
+  const handleOnMouseOut = () => {
+    setIsHovering(false)
+  }
+  
   return (
     <g>
-      <path 
+      <path
+        onMouseOver={() => handleOnMouseOver()} 
+        onMouseOut={() => handleOnMouseOut()} 
         d={pointsToPath(arrow)}
-        stroke='blue'
-        strokeWidth={8}
+        stroke={isHovering ? 'orange' :  
+          isSelected ? colors.selectedArrowColor : colors.mainArrowColor}
+        strokeWidth={isHovering ? 3.35 : 3}
         fill="none"
-        marker-end="url(#triangle)"
-        // onClick={(e) => {
-        //   handleOnClick(e)
-        // }}
-      />
-      <path 
-        d={pointsToPath(arrow)}
-        stroke='yellow'
-        strokeWidth={4}
-        fill="none"
-        // marker-end="url(#triangle)"
-        // onClick={(e) => {
-        //   handleOnClick(e)
-        // }}
+        opacity={isHovering ? 1 : .8}
+        marker-end={isSelected ? 'url(#selectedArrow)' : `url(#mainArrow)`}
       />
     </g>
   )

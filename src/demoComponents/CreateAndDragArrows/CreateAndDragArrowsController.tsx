@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { pointsToPath } from "./utils/pointsToPath";
 import { Arrow } from "./DraggableArrow";
 import SavedArrows from "./SavedArrows";
+import ArrowPointDefs from "./ArrowPointDefs";
+import { colorPaletteStore } from "./colorPaletteStore";
 
 export type AnchorPoint = {
   x: number,
@@ -11,7 +13,8 @@ export type AnchorPoint = {
 const CreateAndDragArrowsController: React.FC = () => {
   const height: number = 800
   const width: number = 1000
-
+  const colors: any = colorPaletteStore((state: any) => state.colors)
+  
   const [mousePosition, setMousePosition] = useState({x: 0, y: 0})
   const [savedArrows, setSavedArrows] = useState<Arrow[]>([])
   const [newArrow, setNewArrow] = useState<Arrow>({start: {x: 0, y: 0}, end: {x: 0, y: 0}, curvePoint: undefined})
@@ -19,7 +22,7 @@ const CreateAndDragArrowsController: React.FC = () => {
   const [triggerTime, setTriggerTime] = useState<number>(Date.now().valueOf())
 
 
-  const handleOnClick = (e: any) => {
+  const handleCreateOnClick = (e: any) => {
     if(isCreatingArrow) {
       setNewArrow({...newArrow, end: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}})
       const savedArrowsSnapshot = savedArrows
@@ -76,19 +79,7 @@ const CreateAndDragArrowsController: React.FC = () => {
             height={height}
             width={width}
         >
-            <defs>
-              <marker
-                id="triangle"
-                viewBox="0 0 10 10"
-                refX="1"
-                refY="5"
-                markerUnits="strokeWidth"
-                markerWidth="10"
-                markerHeight="10"
-                orient="auto">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#f00" />
-              </marker>
-            </defs>
+          <ArrowPointDefs />
             <rect
                 fill="white"
                 width={width}
@@ -96,7 +87,7 @@ const CreateAndDragArrowsController: React.FC = () => {
                 x={0}
                 y={0}
                 onClick={(e) => {
-                  handleOnClick(e)
+                  handleCreateOnClick(e)
                 }}
                 onMouseMove={(e) => {
                     setMousePosition({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
@@ -106,20 +97,19 @@ const CreateAndDragArrowsController: React.FC = () => {
             {isCreatingArrow && 
               <path 
                 d={pointsToPath(newArrow)}
-                stroke='orange'
+                stroke={colors.createArrowColor}
                 strokeWidth={3}
                 fill="none"
-                marker-end="url(#triangle)"
+                marker-end="url(#createArrow)"
                 onClick={(e) => {
-                  handleOnClick(e)
+                  handleCreateOnClick(e)
                 }}
               />
             }
 
             {savedArrows.length > 0 &&
-              <SavedArrows savedArrows={savedArrows} />
+              <SavedArrows savedArrows={savedArrows}/>
             }
-
 
         </svg>
     </div>
