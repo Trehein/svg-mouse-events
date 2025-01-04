@@ -101,6 +101,7 @@ const CreateAndDragArrowsController: React.FC = () => {
                 strokeWidth={3}
                 fill="none"
                 marker-end="url(#createArrow)"
+                marker-start="url(#circle)"
                 onClick={(e) => {
                   handleCreateOnClick(e)
                 }}

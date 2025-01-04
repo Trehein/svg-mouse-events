@@ -62,6 +62,15 @@ const ArrowPointDefs: React.FC = () => {
           fill={colors.hoverArrowColor} 
         />
       </marker>
+      <marker 
+        id="circle" 
+        markerWidth="8" 
+        markerHeight="8" 
+        refX="5" 
+        refY="5"
+      >
+        <circle cx="5" cy="5" r="2" fill={colors.createArrowColor} />
+      </marker>
     </defs>
   )
 }
