@@ -4,6 +4,7 @@ import { Arrow } from "./DraggableArrow";
 import SavedArrows from "./SavedArrows";
 import ArrowPointDefs from "./ArrowPointDefs";
 import { colorPaletteStore } from "./colorPaletteStore";
+import { arrowsStore } from "./stores/arrowsStore";
 
 export type AnchorPoint = {
   x: number,
@@ -14,9 +15,11 @@ const CreateAndDragArrowsController: React.FC = () => {
   const height: number = 800
   const width: number = 1000
   const colors: any = colorPaletteStore((state: any) => state.colors)
+
+  const savedArrows: Arrow[] = arrowsStore((state: any) => state.savedArrowsStore)
+  const setSavedArrows: Function = arrowsStore((state: any) => state.setSavedArrowsStore)
   
   const [mousePosition, setMousePosition] = useState({x: 0, y: 0})
-  const [savedArrows, setSavedArrows] = useState<Arrow[]>([])
   const [newArrow, setNewArrow] = useState<Arrow>({start: {x: 0, y: 0}, end: {x: 0, y: 0}, curvePoint: undefined})
   const [isCreatingArrow, setIsCreatingArrow] = useState<boolean>(false)
   const [triggerTime, setTriggerTime] = useState<number>(Date.now().valueOf())
@@ -30,6 +33,7 @@ const CreateAndDragArrowsController: React.FC = () => {
       
       setIsCreatingArrow(false)
       setSavedArrows(savedArrowsSnapshot)
+
     } else {
       setNewArrow({start: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}, end: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}, curvePoint: undefined})
       setIsCreatingArrow(true)
@@ -58,10 +62,8 @@ const CreateAndDragArrowsController: React.FC = () => {
     setTriggerTime(Date.now().valueOf())
   }
 
-  useEffect(() => {
-
-  }, [triggerTime])
-  // console.log('savedArrows', savedArrows.length)
+  // to force changes on the mapped saved arrows array to update the dom
+  useEffect(() => {}, [triggerTime])
 
   return (
     <div>
@@ -100,8 +102,8 @@ const CreateAndDragArrowsController: React.FC = () => {
                 stroke={colors.createArrowColor}
                 strokeWidth={3}
                 fill="none"
-                marker-end="url(#createArrow)"
-                marker-start="url(#circle)"
+                markerEnd="url(#createArrow)"
+                markerStart="url(#circle)"
                 onClick={(e) => {
                   handleCreateOnClick(e)
                 }}

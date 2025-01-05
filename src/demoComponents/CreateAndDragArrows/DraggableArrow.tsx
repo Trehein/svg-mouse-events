@@ -41,18 +41,22 @@ const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
   
   return (
     <g ref={innerRef}>
+      <g>
+        <circle></circle>
+      </g>
       <path
+        d={pointsToPath(arrow)}
         onClick={() => handleOnClick()}
         onMouseOver={() => handleOnMouseOver()} 
         onMouseOut={() => handleOnMouseOut()} 
-        d={pointsToPath(arrow)}
         stroke={isSelected ? colors.selectedArrowColor :  
           isHovering ? colors.hoverArrowColor : colors.mainArrowColor}
         strokeWidth={isHovering ? 3.35 : 3}
         fill="none"
         opacity={isHovering ? 1 : .8}
-        marker-end={ isSelected ? 'url(#selectedArrow)' : 
+        markerEnd={ isSelected ? 'url(#selectedArrow)' : 
           isHovering ? 'url(#hoverArrow)' : 'url(#mainArrow)'}
+        // marker-start={isSelected ? 'url(#selectedStartCircle)' : ''}
       />
     </g>
   )
