@@ -41,9 +41,6 @@ const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
   
   return (
     <g ref={innerRef}>
-      <g>
-        <circle></circle>
-      </g>
       <path
         d={pointsToPath(arrow)}
         onClick={() => handleOnClick()}
@@ -58,6 +55,59 @@ const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
           isHovering ? 'url(#hoverArrow)' : 'url(#mainArrow)'}
         // marker-start={isSelected ? 'url(#selectedStartCircle)' : ''}
       />
+      {isSelected && 
+      // start
+      <g>
+        <g>
+          <circle 
+            cx={arrow.start.x}
+            cy={arrow.start.y}
+            r={5}
+            fill={isSelected ? colors.selectedArrowColor :  
+              isHovering ? colors.hoverArrowColor : colors.mainArrowColor}
+          />
+          <circle 
+            cx={arrow.start.x}
+            cy={arrow.start.y}
+            r={3}
+            fill={'white'}
+          />
+        </g>
+        {/* middle */}
+        <g>
+          <g>
+            <circle 
+              cx={arrow.start.x}
+              cy={arrow.start.y}
+              r={5}
+              fill={isSelected ? colors.selectedArrowColor :  
+                isHovering ? colors.hoverArrowColor : colors.mainArrowColor}
+            />
+            <circle 
+              cx={arrow.start.x}
+              cy={arrow.start.y}
+              r={3}
+              fill={'white'}
+            />
+          </g>
+        </g>
+        {/* end */}
+        <g>
+          <circle 
+            cx={arrow.end.x}
+            cy={arrow.end.y}
+            r={5}
+            fill={isSelected ? colors.selectedArrowColor :  
+              isHovering ? colors.hoverArrowColor : colors.mainArrowColor}
+          />
+          <circle 
+            cx={arrow.end.x}
+            cy={arrow.end.y}
+            r={3}
+            fill={'white'}
+          />
+        </g>
+      </g>}
     </g>
   )
 }
