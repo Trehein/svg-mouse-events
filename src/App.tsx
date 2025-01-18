@@ -24,9 +24,11 @@
 // import Controller from "./demoComponents/IconPopEffect/Controller";
 // import Controller from './demoComponents/IconColorMorph/Controller'
 // import WordRoller from "./demoComponents/WordRoller/WordRoller";
+// import CreateAndDragArrowsController from "./demoComponents/CreateAndDragArrows/CreateAndDragArrowsController";
+// import DemoHeatmapController from "./DemoControllers/DemoHeatmapController";
 
-import CreateAndDragArrowsController from "./demoComponents/CreateAndDragArrows/CreateAndDragArrowsController";
-import DemoHeatmapController from "./DemoControllers/DemoHeatmapController";
+import ButtonDisplayer from "./demoComponents/Buttons/ButtonDisplayer";
+
 
 function App() {
   return (
@@ -54,7 +56,8 @@ function App() {
       {/* <Controller /> */}
       {/* <WordRoller /> */}
       {/* <DemoHeatmapController /> */}
-      <CreateAndDragArrowsController />
+      {/* <CreateAndDragArrowsController /> */}
+      <ButtonDisplayer />
     </div>
   );
 }
