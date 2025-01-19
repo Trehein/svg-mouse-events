@@ -10,10 +10,12 @@ const SavedArrows: React.FC<SavedArrowsProps> = (props) => {
 
   return (
     <g>
-      { savedArrows.map((savedArrow: Arrow) => {
+      { savedArrows.map((savedArrow: Arrow, arrowIndex: number) => {
         return (
           <DraggableArrow 
             arrow={savedArrow} 
+            arrowIndex={arrowIndex}
+            key={arrowIndex}
           />
         )
       })}

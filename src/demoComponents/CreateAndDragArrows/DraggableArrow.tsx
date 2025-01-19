@@ -12,10 +12,11 @@ export type Arrow = {
 
 export type DraggableArrowProps = {
   arrow: Arrow,
+  arrowIndex: number
 }
 
 const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
-  const {arrow} = props
+  const {arrow, arrowIndex} = props
   const colors: any = colorPaletteStore((state: any) => state.colors)
   const [isHovering, setIsHovering] = useState<boolean>(false)
   const [isSelected, setIsSelected] = useState<boolean>(false)
@@ -38,6 +39,10 @@ const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
     setIsSelected(true)
   }
 
+  const handleOnNodeDrag = () => {
+    console.log('over')
+  }
+
   
   return (
     <g ref={innerRef}>
@@ -55,59 +60,63 @@ const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
           isHovering ? 'url(#hoverArrow)' : 'url(#mainArrow)'}
         // marker-start={isSelected ? 'url(#selectedStartCircle)' : ''}
       />
-      {isSelected && 
-      // start
+      
+      {/* // start */}
       <g>
-        <g>
+        <g
+          onClick={handleOnNodeDrag}
+          cursor={'grab'}
+        >
           <circle 
             cx={arrow.start.x}
             cy={arrow.start.y}
-            r={5}
+            r={isSelected ? 6 : 0}
             fill={isSelected ? colors.selectedArrowColor :  
               isHovering ? colors.hoverArrowColor : colors.mainArrowColor}
+
           />
           <circle 
             cx={arrow.start.x}
             cy={arrow.start.y}
-            r={3}
+            r={isSelected ? 3 : 0}
             fill={'white'}
           />
         </g>
         {/* middle */}
         <g>
-          <g>
+          {/* <g>
             <circle 
               cx={arrow.start.x}
               cy={arrow.start.y}
-              r={5}
+              r={isSelected ? 5 : 0}
               fill={isSelected ? colors.selectedArrowColor :  
                 isHovering ? colors.hoverArrowColor : colors.mainArrowColor}
             />
             <circle 
               cx={arrow.start.x}
               cy={arrow.start.y}
-              r={3}
+              r={isSelected ? 3 : 0}
               fill={'white'}
             />
-          </g>
+          </g> */}
         </g>
         {/* end */}
         <g>
           <circle 
             cx={arrow.end.x}
             cy={arrow.end.y}
-            r={5}
+            r={isSelected ? 6 : 0}
             fill={isSelected ? colors.selectedArrowColor :  
               isHovering ? colors.hoverArrowColor : colors.mainArrowColor}
           />
           <circle 
             cx={arrow.end.x}
             cy={arrow.end.y}
-            r={3}
+            r={isSelected ? 3 : 0}
             fill={'white'}
           />
         </g>
-      </g>}
+      </g>
     </g>
   )
 }

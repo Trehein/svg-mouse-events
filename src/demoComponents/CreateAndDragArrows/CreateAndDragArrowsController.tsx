@@ -24,6 +24,9 @@ const CreateAndDragArrowsController: React.FC = () => {
   const [isCreatingArrow, setIsCreatingArrow] = useState<boolean>(false)
   const [triggerTime, setTriggerTime] = useState<number>(Date.now().valueOf())
 
+  const handleOnNodeDrag = (e: any, arrowIndex: number) => {
+
+  }
 
   const handleCreateOnClick = (e: any) => {
     if(isCreatingArrow) {
@@ -82,37 +85,37 @@ const CreateAndDragArrowsController: React.FC = () => {
             width={width}
         >
           <ArrowPointDefs />
-            <rect
-                fill="white"
-                width={width}
-                height={height}
-                x={0}
-                y={0}
-                onClick={(e) => {
-                  handleCreateOnClick(e)
-                }}
-                onMouseMove={(e) => {
-                    setMousePosition({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
-                    handleOnMouseMove(e)
-                }}
+          <rect
+              fill="white"
+              width={width}
+              height={height}
+              x={0}
+              y={0}
+              onClick={(e) => {
+                handleCreateOnClick(e)
+              }}
+              onMouseMove={(e) => {
+                  setMousePosition({x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY})
+                  handleOnMouseMove(e)
+              }}
+          />
+          {isCreatingArrow && 
+            <path 
+              d={pointsToPath(newArrow)}
+              stroke={colors.createArrowColor}
+              strokeWidth={3}
+              fill="none"
+              markerEnd="url(#createArrow)"
+              markerStart="url(#circle)"
+              onClick={(e) => {
+                handleCreateOnClick(e)
+              }}
             />
-            {isCreatingArrow && 
-              <path 
-                d={pointsToPath(newArrow)}
-                stroke={colors.createArrowColor}
-                strokeWidth={3}
-                fill="none"
-                markerEnd="url(#createArrow)"
-                markerStart="url(#circle)"
-                onClick={(e) => {
-                  handleCreateOnClick(e)
-                }}
-              />
-            }
+          }
 
-            {savedArrows.length > 0 &&
-              <SavedArrows savedArrows={savedArrows}/>
-            }
+          {savedArrows.length > 0 &&
+            <SavedArrows savedArrows={savedArrows}/>
+          }
 
         </svg>
     </div>
