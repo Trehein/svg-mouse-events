@@ -24,10 +24,6 @@ const CreateAndDragArrowsController: React.FC = () => {
   const [isCreatingArrow, setIsCreatingArrow] = useState<boolean>(false)
   const [triggerTime, setTriggerTime] = useState<number>(Date.now().valueOf())
 
-  const handleOnNodeDrag = (e: any, arrowIndex: number) => {
-
-  }
-
   const handleCreateOnClick = (e: any) => {
     if(isCreatingArrow) {
       setNewArrow({...newArrow, end: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}})

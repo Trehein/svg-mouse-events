@@ -3,6 +3,7 @@ import { AnchorPoint } from './CreateAndDragArrowsController'
 import { pointsToPath } from './utils/pointsToPath'
 import { colorPaletteStore } from './colorPaletteStore'
 import { useOuterClick } from './utils/useOuterClick'
+import { arrowsStore } from './stores/arrowsStore'
 
 export type Arrow = {
   start: AnchorPoint,
@@ -17,9 +18,14 @@ export type DraggableArrowProps = {
 
 const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
   const {arrow, arrowIndex} = props
+
+  const savedArrows: Arrow[] = arrowsStore((state: any) => state.savedArrowsStore)
+  const setSavedArrows: Function = arrowsStore((state: any) => state.setSavedArrowsStore)
   const colors: any = colorPaletteStore((state: any) => state.colors)
+  const [tempArrow, setTempArrow] = useState<Arrow>(arrow)
   const [isHovering, setIsHovering] = useState<boolean>(false)
   const [isSelected, setIsSelected] = useState<boolean>(false)
+  const [isDragging, setIsDragging] = useState<boolean>(false)
 
   const innerRef = useOuterClick((e: any) => {
     if(isSelected) {
@@ -39,15 +45,38 @@ const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
     setIsSelected(true)
   }
 
-  const handleOnNodeDrag = () => {
-    console.log('over')
+  const handleOnNodeDragStart = () => {
+    setIsDragging(true)
+    console.log('started dragging')
+    // setTempArrow({...tempArrow, [node]: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}})
+
+    // setNewArrow({...newArrow, end: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}})
+    // const savedArrowsSnapshot = savedArrows
+    // savedArrowsSnapshot[arrowIndex] = {...savedArrowsSnapshot[arrowIndex], start: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}}
+    
+
+    // // setIsCreatingArrow(false)
+    // // setSavedArrows(savedArrowsSnapshot)
+    // console.log(savedArrowsSnapshot[arrowIndex])
+    // setSavedArrows(savedArrowsSnapshot)
+
+  }
+
+  const handleOnNodeDragging = (e: any, node: string) => {
+    setTempArrow({...tempArrow, [node]: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}})
+
+  }
+
+  const handleOnNodeDragEnd = () => {
+    setIsDragging(false)
+    console.log('done')
   }
 
   
   return (
     <g ref={innerRef}>
       <path
-        d={pointsToPath(arrow)}
+        d={pointsToPath(tempArrow)}
         onClick={() => handleOnClick()}
         onMouseOver={() => handleOnMouseOver()} 
         onMouseOut={() => handleOnMouseOut()} 
@@ -64,20 +93,23 @@ const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
       {/* // start */}
       <g>
         <g
-          onClick={handleOnNodeDrag}
-          cursor={'grab'}
+          onMouseDown={handleOnNodeDragStart}
+          // onMouseDown={(e) => handleOnNodeDrag(e, 'start')}
+          onMouseUp={handleOnNodeDragEnd}
+          onMouseMove={(e) => handleOnNodeDragging(e, 'start')}
+          cursor={isDragging ? 'grabbing' : 'grab'}
         >
           <circle 
-            cx={arrow.start.x}
-            cy={arrow.start.y}
+            cx={tempArrow.start.x}
+            cy={tempArrow.start.y}
             r={isSelected ? 6 : 0}
             fill={isSelected ? colors.selectedArrowColor :  
               isHovering ? colors.hoverArrowColor : colors.mainArrowColor}
 
           />
           <circle 
-            cx={arrow.start.x}
-            cy={arrow.start.y}
+            cx={tempArrow.start.x}
+            cy={tempArrow.start.y}
             r={isSelected ? 3 : 0}
             fill={'white'}
           />
@@ -103,15 +135,15 @@ const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
         {/* end */}
         <g>
           <circle 
-            cx={arrow.end.x}
-            cy={arrow.end.y}
+            cx={tempArrow.end.x}
+            cy={tempArrow.end.y}
             r={isSelected ? 6 : 0}
             fill={isSelected ? colors.selectedArrowColor :  
               isHovering ? colors.hoverArrowColor : colors.mainArrowColor}
           />
           <circle 
-            cx={arrow.end.x}
-            cy={arrow.end.y}
+            cx={tempArrow.end.x}
+            cy={tempArrow.end.y}
             r={isSelected ? 3 : 0}
             fill={'white'}
           />
