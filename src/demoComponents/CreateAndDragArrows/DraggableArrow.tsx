@@ -3,7 +3,7 @@ import { AnchorPoint } from './CreateAndDragArrowsController'
 import { pointsToPath } from './utils/pointsToPath'
 import { colorPaletteStore } from './colorPaletteStore'
 import { useOuterClick } from './utils/useOuterClick'
-import { arrowsStore } from './stores/arrowsStore'
+// import { arrowsStore } from './stores/arrowsStore'
 
 export type Arrow = {
   start: AnchorPoint,
@@ -19,8 +19,9 @@ export type DraggableArrowProps = {
 const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
   const {arrow, arrowIndex} = props
 
-  const savedArrows: Arrow[] = arrowsStore((state: any) => state.savedArrowsStore)
-  const setSavedArrows: Function = arrowsStore((state: any) => state.setSavedArrowsStore)
+  // todo - implement global state? No real need unless I want to save
+  // const savedArrows: Arrow[] = arrowsStore((state: any) => state.savedArrowsStore)
+  // const setSavedArrows: Function = arrowsStore((state: any) => state.setSavedArrowsStore)
   const colors: any = colorPaletteStore((state: any) => state.colors)
   const [tempArrow, setTempArrow] = useState<Arrow>(arrow)
   const [isHovering, setIsHovering] = useState<boolean>(false)
@@ -47,29 +48,14 @@ const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
 
   const handleOnNodeDragStart = () => {
     setIsDragging(true)
-    console.log('started dragging')
-    // setTempArrow({...tempArrow, [node]: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}})
-
-    // setNewArrow({...newArrow, end: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}})
-    // const savedArrowsSnapshot = savedArrows
-    // savedArrowsSnapshot[arrowIndex] = {...savedArrowsSnapshot[arrowIndex], start: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}}
-    
-
-    // // setIsCreatingArrow(false)
-    // // setSavedArrows(savedArrowsSnapshot)
-    // console.log(savedArrowsSnapshot[arrowIndex])
-    // setSavedArrows(savedArrowsSnapshot)
-
   }
 
   const handleOnNodeDragging = (e: any, node: string) => {
-    setTempArrow({...tempArrow, [node]: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}})
-
+    isDragging && setTempArrow({...tempArrow, [node]: {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}})
   }
 
   const handleOnNodeDragEnd = () => {
     setIsDragging(false)
-    console.log('done')
   }
 
   
@@ -94,7 +80,6 @@ const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
       <g>
         <g
           onMouseDown={handleOnNodeDragStart}
-          // onMouseDown={(e) => handleOnNodeDrag(e, 'start')}
           onMouseUp={handleOnNodeDragEnd}
           onMouseMove={(e) => handleOnNodeDragging(e, 'start')}
           cursor={isDragging ? 'grabbing' : 'grab'}
@@ -133,7 +118,12 @@ const DraggableArrow: React.FC<DraggableArrowProps> = (props) => {
           </g> */}
         </g>
         {/* end */}
-        <g>
+        <g
+          onMouseDown={handleOnNodeDragStart}
+          onMouseUp={handleOnNodeDragEnd}
+          onMouseMove={(e) => handleOnNodeDragging(e, 'start')}
+          cursor={isDragging ? 'grabbing' : 'grab'}
+        >
           <circle 
             cx={tempArrow.end.x}
             cy={tempArrow.end.y}
