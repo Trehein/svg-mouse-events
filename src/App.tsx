@@ -26,8 +26,8 @@
 // import WordRoller from "./demoComponents/WordRoller/WordRoller";
 // import CreateAndDragArrowsController from "./demoComponents/CreateAndDragArrows/CreateAndDragArrowsController";
 // import DemoHeatmapController from "./DemoControllers/DemoHeatmapController";
-
-import MatterExampleController from "./DemoControllers/MatterExampleController";
+// import MatterExampleController from "./DemoControllers/MatterExampleController";
+import SearchMiniGameController from "./HeinessMiniGames/SearchMiniGame/SearchMiniGameController";
 
 // import ButtonDisplayer from "./demoComponents/Buttons/ButtonDisplayer";
 
@@ -35,7 +35,8 @@ import MatterExampleController from "./DemoControllers/MatterExampleController";
 function App() {
   return (
     <div className="App">
-      <MatterExampleController />
+      <SearchMiniGameController />
+      {/* <MatterExampleController /> */}
       {/* <AnimatedDisplayCase /> */}
       {/* <BallMoveAlongPathController /> */}
       {/* <AnimatedPathController /> */}
