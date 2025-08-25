@@ -23,18 +23,23 @@ interface CardWithLocation extends Card {
   y: number
 }
 
+export enum SelectorType {
+  ICON = 'ICON',
+  COLOR = 'COLOR'
+}
+
 const getRandomInt = (max: number) => {
   return Math.floor(Math.random() * max);
 }
 
-const searchMiniGameControllerStyles = () => {
+const searchMiniGameControllerStyles = (selectorsWidth: number) => {
   return {
     mainContentContainer: {
       width: '100%',
       display: 'flex',
     },
     pointSelectorsContainer: {
-      width: '24em',
+      width: selectorsWidth,
     }
   }
 }
@@ -52,7 +57,9 @@ const SearchMiniGameController: React.FC = () => {
   const width = outerWidth - outerWidth * (margin * 2)
   const gap = outerWidth * (margin * .15)
   const squareSize = (width / 6) - (gap * 2)
-  const styles =   searchMiniGameControllerStyles()
+
+  const selectorsWidth: number = window.innerWidth < 360 ? window.innerWidth : 360
+  const styles =   searchMiniGameControllerStyles(selectorsWidth)
 
   const iconArray: ReactElement[] = [<GiWingfoot />, <GiStrongMan />, <GiFallingLeaf />, <GiBrain />, <GiPotionBall />, <GiPerspectiveDiceSixFacesRandom />]
   const colorArray = ['mediumseagreen', 'mediumvioletred',	'tomato', 'dodgerblue', 'goldenrod', 'rebeccapurple']
@@ -78,11 +85,10 @@ const SearchMiniGameController: React.FC = () => {
     }
   })) 
 
-
-  const [pointSelectors, setPointSelectors] = useState<{pointsForIcons: number[], pointsForColors: number[]}>()
+  const [pointSelectors, setPointSelectors] = useState<{pointsForIcons: number[], pointsForColors: number[], isSelectorsLocked: boolean} >({pointsForIcons: [], pointsForColors: [], isSelectorsLocked: false})
   // const [occupiedXY, setOccupiedXY] = useState<{x: number, y: number}>({x: -1, y: -1})
 
-
+  // BOARD
   const handleOnSquareClick = (x: number, y: number) => {
     const copy = mappedWithLocations.map((item: CardWithLocation) => {
       if(item.x === x && item.y === y) {
@@ -100,6 +106,38 @@ const SearchMiniGameController: React.FC = () => {
     })
     // setOccupiedXY({x, y})
     setMappedWithLocations(copy)
+  }
+
+  // CLICK SELECTORS
+  const handleOnSelectorsClick = (selectorType: SelectorType, selectorIndex: number) => {
+    if(selectorType === SelectorType.ICON) {
+      if(pointSelectors.pointsForIcons.includes(selectorIndex)) {
+        const filteredIconSelectors = pointSelectors.pointsForIcons.filter((pointsForIcon: number) => {
+          return selectorIndex !== pointsForIcon
+        })
+        setPointSelectors({...pointSelectors, pointsForIcons: filteredIconSelectors})
+      } else {
+        const copy: number[] = pointSelectors.pointsForIcons
+        copy.push(selectorIndex)
+        setPointSelectors({...pointSelectors, pointsForIcons: copy})
+      }
+    } else if (selectorType === SelectorType.COLOR) {
+      if(pointSelectors.pointsForColors.includes(selectorIndex)) {
+        const filteredColorsSelectors = pointSelectors.pointsForColors.filter((pointsForColor: number) => {
+          return selectorIndex !== pointsForColor
+        })
+        setPointSelectors({...pointSelectors, pointsForColors: filteredColorsSelectors})
+      } else {
+        const copy: number[] = pointSelectors.pointsForColors
+        copy.push(selectorIndex)
+        setPointSelectors({...pointSelectors, pointsForColors: copy})
+      }
+    }
+  }
+
+  // LOCK SELECTORS
+  const handleOnLockSelectorsClick = () => {
+    setPointSelectors({...pointSelectors, isSelectorsLocked: !pointSelectors.isSelectorsLocked})
   }
 
   return (
@@ -121,7 +159,7 @@ const SearchMiniGameController: React.FC = () => {
                 >
                   <g 
                     transform={`translate(${gap}, ${gap})`}
-                    onClick={(e: any) => handleOnSquareClick((index % 6), Math.floor(index / 6))}
+                    onClick={() => handleOnSquareClick((index % 6), Math.floor(index / 6))}
                   >
                     <rect
                       fill={'white'}
@@ -158,10 +196,12 @@ const SearchMiniGameController: React.FC = () => {
       </svg>
       <div className={'pointSelectorsContainer'} style={styles.pointSelectorsContainer}>
         <PointSelectors 
-          setPointSelectors={setPointSelectors}
           pointSelectors={pointSelectors}
           colorArray={colorArray}
           iconArray={iconArray}
+          sectionWidth={selectorsWidth}
+          handleOnSelectorsClick={handleOnSelectorsClick}
+          handleOnLockSelectorsClick={handleOnLockSelectorsClick}
         />
       </div>
     </div>
