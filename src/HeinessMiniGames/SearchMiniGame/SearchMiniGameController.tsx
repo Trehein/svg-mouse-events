@@ -44,6 +44,40 @@ const searchMiniGameControllerStyles = (selectorsWidth: number) => {
   }
 }
 
+type DifficultyOption = {
+  text: string,
+  numberOfSelectors: number,
+  oddsOfHit: number
+}
+
+const difficultyOptions: DifficultyOption[] = [
+  {
+    text: 'VE',
+    numberOfSelectors: 6,
+    oddsOfHit: 9
+  },
+  {
+    text: 'E',
+    numberOfSelectors: 5,
+    oddsOfHit: 6
+  },
+  {
+    text: 'M',
+    numberOfSelectors: 4,
+    oddsOfHit: 4
+  },
+  {
+    text: 'H',
+    numberOfSelectors: 3,
+    oddsOfHit: 2
+  },
+  {
+    text: 'VH',
+    numberOfSelectors: 2,
+    oddsOfHit: 1
+  },
+]
+
 // TODO - swap icon and background if it is a hit
 // TODO - animate circle size - add additional with opacity layer to ripple
 // TODO - border for current occupied
@@ -85,6 +119,7 @@ const SearchMiniGameController: React.FC = () => {
     }
   })) 
 
+  const [difficulty, setDifficulty] = useState<DifficultyOption | undefined>(undefined)
   const [pointSelectors, setPointSelectors] = useState<{pointsForIcons: number[], pointsForColors: number[], isSelectorsLocked: boolean} >({pointsForIcons: [], pointsForColors: [], isSelectorsLocked: false})
   // const [occupiedXY, setOccupiedXY] = useState<{x: number, y: number}>({x: -1, y: -1})
 

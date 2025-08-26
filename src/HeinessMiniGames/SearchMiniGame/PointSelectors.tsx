@@ -68,12 +68,11 @@ const PointSelectors: React.FC<PointSelectorsProps> = ({
   const styles = pointSelectorsStyles(containerHeight)
   const playButtonHeight = containerHeight * 1.5
   const activeSelectionHeight = containerHeight * .75
-  // const activeIconHeight = containerHeight
 
   return (
     <div className={'selectorInnerContainer'} style={styles.selectorInnerContainer}>
 
-      {/* POINTS */}
+      {/* ICONS */}
       <div className={'arrayContainer'} style={styles.arrayContainer}>
         {
           iconArray.map((icon: ReactElement, index: number) => {
@@ -132,7 +131,7 @@ const PointSelectors: React.FC<PointSelectorsProps> = ({
                       height={containerHeight * .8}
                       width={containerHeight * .8}
                       rx={'5%'}
-                      fill={isColorActive ? 'white' : color}
+                      fill={color}
                       stroke={color}
                       strokeWidth={2}
                     />
@@ -164,7 +163,8 @@ const PointSelectors: React.FC<PointSelectorsProps> = ({
           <svg height={playButtonHeight} width={playButtonHeight}>
             <g 
               transform={`translate(${(playButtonHeight) * .05} ${(playButtonHeight) * .05})`}    
-              onClick={() => handleOnLockSelectorsClick()}          
+              onClick={() => handleOnLockSelectorsClick()}    
+              cursor='pointer'      
             >
               <rect 
                 width={playButtonHeight * .9}
@@ -224,7 +224,7 @@ const PointSelectors: React.FC<PointSelectorsProps> = ({
             }
           </div>
           {/* ADDITION ICON */}
-          <div className={'arrayItem'} style={styles.arrayItem}>
+          <div className={'arrayItem'} style={{...styles.arrayItem, margin: '0px 1em'}}>
             <IconContext.Provider 
               value={{ 
                 size: `${(activeSelectionHeight) * .5}`,
