@@ -1,12 +1,14 @@
 import React, { ReactElement, useState } from 'react'
-import { IconContext } from 'react-icons';
 import { GiWingfoot } from "react-icons/gi";
 import { GiStrongMan } from "react-icons/gi";
 import { GiFallingLeaf } from "react-icons/gi";
 import { GiBrain } from "react-icons/gi";
 import { GiPotionBall } from "react-icons/gi";
-import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
+import { GiArmorUpgrade  } from "react-icons/gi";
 import PointSelectors from './PointSelectors';
+import DifficultySelector from './DifficultySelector';
+import SearchCardDeck from './SearchCardDeck';
+import Scoring from './Scoring';
 
 interface Card {
   icon: ReactElement,
@@ -18,7 +20,7 @@ interface Card {
   isBeingOccupied: boolean
 }
 
-interface CardWithLocation extends Card {
+export interface CardWithLocation extends Card {
   x: number,
   y: number
 }
@@ -38,49 +40,65 @@ const searchMiniGameControllerStyles = (selectorsWidth: number) => {
       width: '100%',
       display: 'flex',
     },
-    pointSelectorsContainer: {
+    selectorsContainer: {
       width: selectorsWidth,
-    }
+      display: 'flex',
+      flexDirection: 'column' as 'column'
+    },
   }
 }
 
-type DifficultyOption = {
-  text: string,
-  numberOfSelectors: number,
-  oddsOfHit: number
+export type ScoredPoint = {
+  iconId: number,
+  colorId: number,
+  isFlipped: boolean
 }
 
-const difficultyOptions: DifficultyOption[] = [
+export type DifficultyOption = {
+  text: string,
+  numberOfSelectors: number,
+  oddsOfHit: number,
+  color: string
+}
+
+export const difficultyOptions: DifficultyOption[] = [
   {
     text: 'VE',
     numberOfSelectors: 6,
-    oddsOfHit: 9
+    oddsOfHit: 9,
+    color: 'seagreen'
   },
   {
     text: 'E',
     numberOfSelectors: 5,
-    oddsOfHit: 6
+    oddsOfHit: 6,
+    color: 'olivedrab'
   },
   {
     text: 'M',
     numberOfSelectors: 4,
-    oddsOfHit: 4
+    oddsOfHit: 4,
+    color: 'darkkhaki'
   },
   {
     text: 'H',
     numberOfSelectors: 3,
-    oddsOfHit: 2
+    oddsOfHit: 2,
+    color: 'chocolate'
   },
   {
     text: 'VH',
     numberOfSelectors: 2,
-    oddsOfHit: 1
+    oddsOfHit: 1,
+    color: 'darkred'
   },
 ]
 
-// TODO - swap icon and background if it is a hit
-// TODO - animate circle size - add additional with opacity layer to ripple
-// TODO - border for current occupied
+export type PointSelectorsState = {
+  pointsForIcons: number[], 
+  pointsForColors: number[], 
+  isSelectorsLocked: boolean
+}
 
 const SearchMiniGameController: React.FC = () => {
   const outerHeight = window.innerHeight * .6
@@ -91,11 +109,12 @@ const SearchMiniGameController: React.FC = () => {
   const width = outerWidth - outerWidth * (margin * 2)
   const gap = outerWidth * (margin * .15)
   const squareSize = (width / 6) - (gap * 2)
+  const maxSidePanelWidth = 360
 
-  const selectorsWidth: number = window.innerWidth < 360 ? window.innerWidth : 360
+  const selectorsWidth: number = window.innerWidth < maxSidePanelWidth ? window.innerWidth : maxSidePanelWidth
   const styles =   searchMiniGameControllerStyles(selectorsWidth)
 
-  const iconArray: ReactElement[] = [<GiWingfoot />, <GiStrongMan />, <GiFallingLeaf />, <GiBrain />, <GiPotionBall />, <GiPerspectiveDiceSixFacesRandom />]
+  const iconArray: ReactElement[] = [<GiWingfoot />, <GiStrongMan />, <GiFallingLeaf />, <GiBrain />, <GiPotionBall />, <GiArmorUpgrade  />]
   const colorArray = ['mediumseagreen', 'mediumvioletred',	'tomato', 'dodgerblue', 'goldenrod', 'rebeccapurple']
 
   const emptyArray = new Array(36).fill(undefined);
@@ -120,12 +139,13 @@ const SearchMiniGameController: React.FC = () => {
   })) 
 
   const [difficulty, setDifficulty] = useState<DifficultyOption | undefined>(undefined)
-  const [pointSelectors, setPointSelectors] = useState<{pointsForIcons: number[], pointsForColors: number[], isSelectorsLocked: boolean} >({pointsForIcons: [], pointsForColors: [], isSelectorsLocked: false})
+  const [pointSelectors, setPointSelectors] = useState<PointSelectorsState>({pointsForIcons: [], pointsForColors: [], isSelectorsLocked: false})
+  const [pointsScored, setPointsScored] = useState<ScoredPoint[]>([])
   // const [occupiedXY, setOccupiedXY] = useState<{x: number, y: number}>({x: -1, y: -1})
 
   // BOARD
-  const handleOnSquareClick = (x: number, y: number) => {
-    const copy = mappedWithLocations.map((item: CardWithLocation) => {
+  const handleOnSquareClick = (x: number, y: number, cardData: CardWithLocation) => {
+    const copyMappedWithLocations = mappedWithLocations.map((item: CardWithLocation) => {
       if(item.x === x && item.y === y) {
         return {
           ...item,
@@ -139,8 +159,29 @@ const SearchMiniGameController: React.FC = () => {
         }
       }
     })
+
     // setOccupiedXY({x, y})
-    setMappedWithLocations(copy)
+    setMappedWithLocations(copyMappedWithLocations)
+
+    const isIconMatch = pointSelectors.pointsForIcons.includes(cardData.iconId)
+    const isColorMatch = pointSelectors.pointsForColors.includes(cardData.colorId)
+    
+    if(isIconMatch && isColorMatch) {
+      const isAlreadyInPointsScored = pointsScored.filter((scoredPoint: ScoredPoint) => {return scoredPoint.colorId === cardData.colorId && scoredPoint.iconId === cardData.iconId})
+
+      const copyPointsScored = pointsScored
+      if (isAlreadyInPointsScored.length === 0) {
+        copyPointsScored.push({iconId: cardData.iconId, colorId: cardData.colorId, isFlipped: true})
+      }
+
+      setPointsScored(copyPointsScored)
+    }
+
+  }
+
+  // DIFFICULTY
+  const handleOnSelectDifficulty = (selectedDifficulty: DifficultyOption) => {
+    setDifficulty(selectedDifficulty)
   }
 
   // CLICK SELECTORS
@@ -177,66 +218,39 @@ const SearchMiniGameController: React.FC = () => {
 
   return (
     <div className={'mainContentContainer'} style={styles.mainContentContainer}>
-      <svg height={outerHeight} width={outerWidth}>
-        <g transform={`translate(${outerHeight * margin}, ${outerWidth * margin})`}>
-          <rect
-            height={height}
-            width={width}
-            fill={'white'}
-          />
-          {
-            mappedWithLocations.map((item, index) => {
-              return (
-                <g 
-                  key={index} 
-                  transform={`translate(${(index % 6) * ((gap * 2) + squareSize)}, ${Math.floor(index / 6) * ((gap * 2) + squareSize)})`}
-                  cursor={'pointer'}
-                >
-                  <g 
-                    transform={`translate(${gap}, ${gap})`}
-                    onClick={() => handleOnSquareClick((index % 6), Math.floor(index / 6))}
-                  >
-                    <rect
-                      fill={'white'}
-                      height={squareSize}
-                      width={squareSize}
-                      stroke={'lightgrey'}
-                      strokeWidth={2}
-                      rx={'.75%'}
-                    />
-                    { item.isFlipped &&                 
-                      <g transform={`translate(${squareSize * .25}, ${squareSize * .25})`}>
-                        <circle 
-                          fill={'white'}
-                          cx={squareSize * .25}
-                          cy={squareSize * .25}
-                          r={squareSize * .35}
-                        />
-                        <IconContext.Provider 
-                          value={{ 
-                            size: `${squareSize * .45}px`,
-                            color: item.color 
-                          }}
-                        >
-                          {item.icon}
-                        </IconContext.Provider>
-                      </g>
-                    }
-                  </g>
-                </g>
-              )
-            })
-          }
-        </g>
-      </svg>
-      <div className={'pointSelectorsContainer'} style={styles.pointSelectorsContainer}>
+      <SearchCardDeck 
+        margin={margin} 
+        height={height} 
+        outerHeight={outerHeight}
+        width={width} 
+        outerWidth={outerWidth}
+        squareSize={squareSize} 
+        gap={gap} 
+        cardsData={mappedWithLocations} 
+        handleOnSquareClick={handleOnSquareClick}    
+        pointSelectors={pointSelectors}    
+      />
+      <div className={'selectorsContainer'} style={styles.selectorsContainer}>
+        <DifficultySelector 
+          difficultyOptions={difficultyOptions} 
+          difficulty={difficulty} 
+          setDifficulty={handleOnSelectDifficulty}        
+        />
         <PointSelectors 
           pointSelectors={pointSelectors}
           colorArray={colorArray}
           iconArray={iconArray}
           sectionWidth={selectorsWidth}
           handleOnSelectorsClick={handleOnSelectorsClick}
-          handleOnLockSelectorsClick={handleOnLockSelectorsClick}
+          handleOnLockSelectorsClick={handleOnLockSelectorsClick}          
+          difficulty={difficulty} 
+        />
+        <Scoring 
+          scoredPoints={pointsScored}
+          iconArray={iconArray}
+          colorArray={colorArray}
+          width={maxSidePanelWidth}
+          pointSelectors={pointSelectors}
         />
       </div>
     </div>

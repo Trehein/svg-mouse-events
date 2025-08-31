@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 import { IconContext } from 'react-icons';
-import { SelectorType } from './SearchMiniGameController';
-import { FaPlay, FaQuestion, FaPlus } from "react-icons/fa";
-
+import { DifficultyOption, SelectorType } from './SearchMiniGameController';
+import { FaPlay, FaQuestion, FaPlus, FaLessThanEqual } from "react-icons/fa";
+import { SiAdblock } from "react-icons/si";
 
 type PointSelectorsProps = {
   pointSelectors: {
@@ -13,7 +13,8 @@ type PointSelectorsProps = {
   colorArray: string[],
   sectionWidth: number,
   handleOnSelectorsClick: Function,
-  handleOnLockSelectorsClick: Function
+  handleOnLockSelectorsClick: Function,
+  difficulty: DifficultyOption | undefined
 }
 
 const pointSelectorsStyles = (containerHeight: number) => {
@@ -21,7 +22,6 @@ const pointSelectorsStyles = (containerHeight: number) => {
     selectorInnerContainer: {
       display: 'flex',
       flexDirection: 'column' as 'column',
-      marginTop: '2.5em'
     },
     arrayItem: {
       width: `100%`,
@@ -48,11 +48,22 @@ const pointSelectorsStyles = (containerHeight: number) => {
       border: 'none'
     },
     selectionsContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      width: 'fit-content',
-      margin: '0px auto'
+      // display: 'flex',
+      // alignItems: 'center',
+      // width: 'fit-content',
+      // margin: '0px auto'
     },
+    maxSelectorsSum: {
+      fontFamily: `"Varela Round", sans-serif`,
+      fontSize: '1.85em',
+      fontWeight: 800
+    },
+    activeSelectorsContainer: {
+      display: 'flex',
+      maxWidth: '2em'
+      // width: '3em',
+      // flexDirection: 'column' as 'column'
+    }
   }
 }
 
@@ -62,12 +73,22 @@ const PointSelectors: React.FC<PointSelectorsProps> = ({
   sectionWidth, 
   pointSelectors, 
   handleOnSelectorsClick,
-  handleOnLockSelectorsClick
+  handleOnLockSelectorsClick,
+  difficulty
 }) => {
   const containerHeight = sectionWidth / 6
   const styles = pointSelectorsStyles(containerHeight)
   const playButtonHeight = containerHeight * 1.5
   const activeSelectionHeight = containerHeight * .75
+  const isReadyToPlay: () => boolean = () => {
+    const numberOfSelectedColors = pointSelectors.pointsForColors.length
+    const numberOfSelectedIcons = pointSelectors.pointsForIcons.length
+
+    return difficulty !== undefined 
+      && ((numberOfSelectedColors + numberOfSelectedIcons) <= difficulty.numberOfSelectors)
+      && (numberOfSelectedColors > 0 && numberOfSelectedIcons > 0)
+      && Math.abs(numberOfSelectedColors - numberOfSelectedIcons) < 2
+  }
 
   return (
     <div className={'selectorInnerContainer'} style={styles.selectorInnerContainer}>
@@ -159,12 +180,11 @@ const PointSelectors: React.FC<PointSelectorsProps> = ({
       {/* ACTIVE SELECTORS */}
       <div className={'activePointSelectors'} style={styles.activePointSelectors}>
         {/* PLAY BUTTON */}
-        <button className={'playButton'} style={styles.playButton}>
+        <button className={'playButton'} style={{...styles.playButton, cursor: isReadyToPlay() ? 'pointer' : 'not-allowed'}}>
           <svg height={playButtonHeight} width={playButtonHeight}>
             <g 
               transform={`translate(${(playButtonHeight) * .05} ${(playButtonHeight) * .05})`}    
               onClick={() => handleOnLockSelectorsClick()}    
-              cursor='pointer'      
             >
               <rect 
                 width={playButtonHeight * .9}
@@ -183,19 +203,22 @@ const PointSelectors: React.FC<PointSelectorsProps> = ({
                     color: 'black'
                   }}
                 >
-                  <FaPlay />
+                  {/* <FaPlay /> */}
+                  {isReadyToPlay() && <FaPlay />}
+                  {!isReadyToPlay() && <SiAdblock />}
                 </IconContext.Provider>
               </g>
             </g>
           </svg>
         </button>
         {/* SELECTIONS CONTAINER */}
-        <div className={'selectionsContainer'} style={styles.selectionsContainer}>
+        <div className={'selectionsContainer'} style={{...styles.selectionsContainer, display: 'flex', alignItems: 'center', width: '100%'}}>
           {/* SELECTED ICONS */}
-          <div className={'arrayContainer'} style={{...styles.arrayContainer, justifyContent: 'start', width: 'fit-content'}}>
+          <div style={{width: '25%'}}>
+            {/* QUESTION */}
             {
               pointSelectors.pointsForIcons.length === 0 && 
-                <div className={'arrayItem'} style={styles.arrayItem}>
+                <div className={'arrayItem'} style={{...styles.arrayItem}}>
                   <IconContext.Provider 
                     value={{ 
                       size: `${(activeSelectionHeight) * .5}`,
@@ -206,25 +229,35 @@ const PointSelectors: React.FC<PointSelectorsProps> = ({
                   </IconContext.Provider>
                 </div>
             }
+            {/* SELECTED ICONS */}
             {
-              pointSelectors.pointsForIcons.length > 0 && pointSelectors.pointsForIcons.map((iconIndex: number, index: number) => {
-                return (
-                  <div className={'arrayItem'} style={styles.arrayItem} key={`iconArrayItem-${index}`}>
-                    <IconContext.Provider 
-                      value={{ 
-                        size: `${(activeSelectionHeight) * .5}`,
-                        color: 'black'
-                      }}
-                    >
-                      {iconArray[iconIndex]}
-                    </IconContext.Provider>
-                  </div>
-                )
-              })
+              pointSelectors.pointsForIcons.length > 0 && 
+                <div style={{width: '4em', display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' as 'wrap'}}>
+                  {                
+                    pointSelectors.pointsForIcons.map((iconIndex: number, index: number) => {
+                      return (
+                        <div 
+                          className={'arrayItem'} 
+                          style={{...styles.arrayItem, width: '50%', margin: '.15em 0em', cursor: 'pointer'}} 
+                          key={`iconArrayItem-${index}`}
+                          onClick={() => handleOnSelectorsClick(SelectorType.ICON, iconIndex)} 
+                        >
+                          <IconContext.Provider 
+                            value={{ 
+                              size: `${(activeSelectionHeight) * .5}`,
+                              color: 'black'
+                            }}
+                          >
+                            {iconArray[iconIndex]}
+                          </IconContext.Provider>
+                        </div>
+                      )
+                    })}
+                </div>
             }
           </div>
           {/* ADDITION ICON */}
-          <div className={'arrayItem'} style={{...styles.arrayItem, margin: '0px 1em'}}>
+          <div className={'arrayItem'} style={{...styles.arrayItem, margin: '0px .75em', width: 'fit-content'}}>
             <IconContext.Provider 
               value={{ 
                 size: `${(activeSelectionHeight) * .5}`,
@@ -234,8 +267,9 @@ const PointSelectors: React.FC<PointSelectorsProps> = ({
               {<FaPlus />}
             </IconContext.Provider>
           </div>
-          {/* SELECTED ICONS */}
-          <div className={'arrayContainer'} style={{...styles.arrayContainer, justifyContent: 'start', width: 'fit-content'}}>
+
+          <div style={{width: '25%'}}>
+            {/* QUESTION */}
             {
               pointSelectors.pointsForColors.length === 0 && 
                 <div className={'arrayItem'} style={styles.arrayItem}>
@@ -249,31 +283,54 @@ const PointSelectors: React.FC<PointSelectorsProps> = ({
                   </IconContext.Provider>
                 </div>
             }
+
+            {/* SELECTED COLORS */}
             {
-              pointSelectors.pointsForColors.length > 0 && pointSelectors.pointsForColors.map((colorIndex: number, index: number) => {
-                return (
-                  <div className={'arrayItem'} style={styles.arrayItem} key={`iconArrayItem-${index}`}>
-                    <svg height={containerHeight * .5} width={containerHeight * .5}>
-                      <g 
-                        transform={`translate(${containerHeight * .05} ${containerHeight * .05})`}
-                        onClick={() => handleOnSelectorsClick(SelectorType.COLOR, index)} 
-                        cursor={'pointer'}                       
-                      >
-                        <rect 
-                          height={(containerHeight * .5) * .8}
-                          width={(containerHeight * .5) * .8}
-                          rx={'5%'}
-                          fill={colorArray[colorIndex]}
-                          stroke={colorArray[colorIndex]}
-                          strokeWidth={2}
-                        />
-                      </g>
-                    </svg>
-                  </div>
-                )
-              })
+              pointSelectors.pointsForColors.length > 0 && 
+                <div style={{width: '4em', display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' as 'wrap'}}>
+                  {             
+                  pointSelectors.pointsForColors.map((colorIndex: number, index: number) => {
+                    return (
+                      <div className={'arrayItem'} style={{...styles.arrayItem, width: '50%'}} key={`iconArrayItem-${index}`}>
+                        <svg height={containerHeight * .5} width={containerHeight * .5}>
+                          <g 
+                            transform={`translate(${containerHeight * .05} ${containerHeight * .05})`}
+                            onClick={() => handleOnSelectorsClick(SelectorType.COLOR, colorIndex)} 
+                            cursor={'pointer'}                       
+                          >
+                            <rect 
+                              height={(containerHeight * .5) * .8}
+                              width={(containerHeight * .5) * .8}
+                              rx={'5%'}
+                              fill={colorArray[colorIndex]}
+                              stroke={colorArray[colorIndex]}
+                              strokeWidth={2}
+                            />
+                          </g>
+                        </svg>
+                      </div>
+                    )
+                  })}
+                </div>
             }
           </div>
+
+
+          {/* >= ICON */}
+          <div className={'arrayItem'} style={{width: '3em', display: 'flex', justifyContent: 'center'}}>
+            <IconContext.Provider 
+              value={{ 
+                size: `${(activeSelectionHeight) * .5}`,
+                color: 'black'
+              }}
+            >
+              {<FaLessThanEqual />}
+            </IconContext.Provider>
+          </div>
+          {/* MAX SELECTORS SUM ICON */}
+          <h1 className={'maxSelectorsSum'} style={styles.maxSelectorsSum}>
+            {difficulty?.numberOfSelectors}
+          </h1>
         </div>
       </div>
     </div>
