@@ -9,6 +9,9 @@ import PointSelectors from './PointSelectors';
 import DifficultySelector from './DifficultySelector';
 import SearchCardDeck from './SearchCardDeck';
 import Scoring from './Scoring';
+import { IconContext } from 'react-icons';
+import { FaPlay } from 'react-icons/fa';
+import { SiAdblock } from 'react-icons/si';
 
 interface Card {
   icon: ReactElement,
@@ -40,10 +43,19 @@ const searchMiniGameControllerStyles = (selectorsWidth: number) => {
       width: '100%',
       display: 'flex',
     },
-    selectorsContainer: {
+    sideContainer: {
       width: selectorsWidth,
       display: 'flex',
       flexDirection: 'column' as 'column'
+    },
+    setupSelectors: {
+
+    },
+    playButton: {
+      padding: '0px',
+      margin: '0px',
+      backgroundColor: 'white',
+      border: 'none'
     },
   }
 }
@@ -113,6 +125,9 @@ const SearchMiniGameController: React.FC = () => {
 
   const selectorsWidth: number = window.innerWidth < maxSidePanelWidth ? window.innerWidth : maxSidePanelWidth
   const styles =   searchMiniGameControllerStyles(selectorsWidth)
+
+  const containerHeight = selectorsWidth / 6
+  const playButtonHeight = containerHeight * 1.5
 
   const iconArray: ReactElement[] = [<GiWingfoot />, <GiStrongMan />, <GiFallingLeaf />, <GiBrain />, <GiPotionBall />, <GiArmorUpgrade  />]
   const colorArray = ['mediumseagreen', 'mediumvioletred',	'tomato', 'dodgerblue', 'goldenrod', 'rebeccapurple']
@@ -216,6 +231,16 @@ const SearchMiniGameController: React.FC = () => {
     setPointSelectors({...pointSelectors, isSelectorsLocked: !pointSelectors.isSelectorsLocked})
   }
 
+  const isReadyToPlay: () => boolean = () => {
+    const numberOfSelectedColors = pointSelectors.pointsForColors.length
+    const numberOfSelectedIcons = pointSelectors.pointsForIcons.length
+
+    return difficulty !== undefined 
+      && ((numberOfSelectedColors + numberOfSelectedIcons) <= difficulty.numberOfSelectors)
+      && (numberOfSelectedColors > 0 && numberOfSelectedIcons > 0)
+      && Math.abs(numberOfSelectedColors - numberOfSelectedIcons) < 2
+  }
+
   return (
     <div className={'mainContentContainer'} style={styles.mainContentContainer}>
       <SearchCardDeck 
@@ -230,28 +255,65 @@ const SearchMiniGameController: React.FC = () => {
         handleOnSquareClick={handleOnSquareClick}    
         pointSelectors={pointSelectors}    
       />
-      <div className={'selectorsContainer'} style={styles.selectorsContainer}>
-        <DifficultySelector 
-          difficultyOptions={difficultyOptions} 
-          difficulty={difficulty} 
-          setDifficulty={handleOnSelectDifficulty}        
-        />
-        <PointSelectors 
-          pointSelectors={pointSelectors}
-          colorArray={colorArray}
-          iconArray={iconArray}
-          sectionWidth={selectorsWidth}
-          handleOnSelectorsClick={handleOnSelectorsClick}
-          handleOnLockSelectorsClick={handleOnLockSelectorsClick}          
-          difficulty={difficulty} 
-        />
-        <Scoring 
-          scoredPoints={pointsScored}
-          iconArray={iconArray}
-          colorArray={colorArray}
-          width={maxSidePanelWidth}
-          pointSelectors={pointSelectors}
-        />
+      <div className={'sideContainer'} style={styles.sideContainer}>
+        <div className={'setupSelectors'} style={styles.setupSelectors}>
+          <DifficultySelector 
+            difficultyOptions={difficultyOptions} 
+            difficulty={difficulty} 
+            setDifficulty={handleOnSelectDifficulty}        
+          />
+          <PointSelectors 
+            pointSelectors={pointSelectors}
+            colorArray={colorArray}
+            iconArray={iconArray}
+            sectionWidth={selectorsWidth}
+            handleOnSelectorsClick={handleOnSelectorsClick}
+            handleOnLockSelectorsClick={handleOnLockSelectorsClick}          
+            difficulty={difficulty} 
+          />
+        </div>
+        {/* PLAY BUTTON */}
+        <button className={'playButton'} style={{...styles.playButton, cursor: isReadyToPlay() ? 'pointer' : 'not-allowed'}}>
+          <svg height={playButtonHeight} width={playButtonHeight}>
+            <g 
+              transform={`translate(${(playButtonHeight) * .05} ${(playButtonHeight) * .05})`}    
+              onClick={() => handleOnLockSelectorsClick()}    
+            >
+              <rect 
+                width={playButtonHeight * .9}
+                height={playButtonHeight * .9}
+                rx={'6.5%'}
+                stroke={'black'}
+                strokeWidth={2}
+                fill='white'
+              />
+              <g 
+                transform={`translate(${(playButtonHeight) * .1} ${(playButtonHeight) * .1})`}              
+              >
+                <IconContext.Provider 
+                  value={{ 
+                    size: `${playButtonHeight * .7}`,
+                    color: 'black'
+                  }}
+                >
+                  {/* <FaPlay /> */}
+                  {isReadyToPlay() && <FaPlay />}
+                  {!isReadyToPlay() && <SiAdblock />}
+                </IconContext.Provider>
+              </g>
+            </g>
+          </svg>
+        </button>
+        {
+          pointSelectors.isSelectorsLocked &&
+          <Scoring 
+            scoredPoints={pointsScored}
+            iconArray={iconArray}
+            colorArray={colorArray}
+            width={maxSidePanelWidth}
+            pointSelectors={pointSelectors}
+          />
+        }
       </div>
     </div>
   )

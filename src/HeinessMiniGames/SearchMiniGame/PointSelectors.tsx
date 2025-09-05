@@ -50,8 +50,8 @@ const pointSelectorsStyles = (containerHeight: number) => {
     selectionsContainer: {
       // display: 'flex',
       // alignItems: 'center',
-      // width: 'fit-content',
-      // margin: '0px auto'
+      width: 'fit-content',
+      margin: '0px auto'
     },
     maxSelectorsSum: {
       fontFamily: `"Varela Round", sans-serif`,
@@ -179,40 +179,8 @@ const PointSelectors: React.FC<PointSelectorsProps> = ({
 
       {/* ACTIVE SELECTORS */}
       <div className={'activePointSelectors'} style={styles.activePointSelectors}>
-        {/* PLAY BUTTON */}
-        <button className={'playButton'} style={{...styles.playButton, cursor: isReadyToPlay() ? 'pointer' : 'not-allowed'}}>
-          <svg height={playButtonHeight} width={playButtonHeight}>
-            <g 
-              transform={`translate(${(playButtonHeight) * .05} ${(playButtonHeight) * .05})`}    
-              onClick={() => handleOnLockSelectorsClick()}    
-            >
-              <rect 
-                width={playButtonHeight * .9}
-                height={playButtonHeight * .9}
-                rx={'6.5%'}
-                stroke={'black'}
-                strokeWidth={2}
-                fill='white'
-              />
-              <g 
-                transform={`translate(${(playButtonHeight) * .1} ${(playButtonHeight) * .1})`}              
-              >
-                <IconContext.Provider 
-                  value={{ 
-                    size: `${playButtonHeight * .7}`,
-                    color: 'black'
-                  }}
-                >
-                  {/* <FaPlay /> */}
-                  {isReadyToPlay() && <FaPlay />}
-                  {!isReadyToPlay() && <SiAdblock />}
-                </IconContext.Provider>
-              </g>
-            </g>
-          </svg>
-        </button>
         {/* SELECTIONS CONTAINER */}
-        <div className={'selectionsContainer'} style={{...styles.selectionsContainer, display: 'flex', alignItems: 'center', width: '100%'}}>
+        <div className={'selectionsContainer'} style={{...styles.selectionsContainer, display: 'flex', alignItems: 'center'}}>
           {/* SELECTED ICONS */}
           <div style={{width: '25%'}}>
             {/* QUESTION */}
