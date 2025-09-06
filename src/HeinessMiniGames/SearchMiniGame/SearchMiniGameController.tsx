@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useCallback, useState } from 'react'
 import { GiWingfoot } from "react-icons/gi";
 import { GiStrongMan } from "react-icons/gi";
 import { GiFallingLeaf } from "react-icons/gi";
@@ -10,6 +10,7 @@ import DifficultySelector from './DifficultySelector';
 import SearchCardDeck from './SearchCardDeck';
 import Scoring from './Scoring';
 import PlayButton from '../Components/PlayButton';
+import DiceDisplay from './DiceDisplay';
 
 interface Card {
   icon: ReactElement,
@@ -32,7 +33,13 @@ export enum SelectorType {
   DIFFICULTY = 'DIFFICULTY'
 }
 
-const getRandomInt = (max: number) => {
+const getRandomInt = (max: number, min?: number) => {
+  if(min) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   return Math.floor(Math.random() * max);
 }
 
@@ -130,7 +137,7 @@ const SearchMiniGameController: React.FC = () => {
   const styles =   searchMiniGameControllerStyles(selectorsWidth)
 
   const containerHeight = selectorsWidth / 6
-  const playButtonHeight = containerHeight * 1.5
+  const playButtonHeight = containerHeight * 3
 
   const iconArray: ReactElement[] = [<GiWingfoot />, <GiStrongMan />, <GiFallingLeaf />, <GiBrain />, <GiPotionBall />, <GiArmorUpgrade  />]
   const colorArray = ['mediumseagreen', 'mediumvioletred',	'tomato', 'dodgerblue', 'goldenrod', 'rebeccapurple']
@@ -160,85 +167,111 @@ const SearchMiniGameController: React.FC = () => {
   const [pointSelectors, setPointSelectors] = useState<PointSelectorsState>({pointsForIcons: [], pointsForColors: []})
   
   const [locks, setLocks] = useState<LocksState>({isDifficultyLocked: false, isSelectorsLocked: false})
+  const [searchChances, setSearchChances] = useState<number[]>([0,0,0])
 
   const [pointsScored, setPointsScored] = useState<ScoredPoint[]>([])
   // const [occupiedXY, setOccupiedXY] = useState<{x: number, y: number}>({x: -1, y: -1})
 
+  const isGameOver = useCallback(() => {
+    const activeDiceIndex = searchChances.findIndex((searchChances: number) => {
+      return searchChances > 0
+    })
+    return activeDiceIndex === -1
+  }, [searchChances])
+
   // BOARD
   const handleOnSquareClick = (x: number, y: number, cardData: CardWithLocation) => {
-    const copyMappedWithLocations = mappedWithLocations.map((item: CardWithLocation) => {
-      if(item.x === x && item.y === y) {
-        return {
-          ...item,
-          isBeingOccupied: true,
-          isFlipped: true
+    if(locks.isSelectorsLocked && !isGameOver()) {
+      const copyMappedWithLocations = mappedWithLocations.map((item: CardWithLocation) => {
+        if(item.x === x && item.y === y) {
+          return {
+            ...item,
+            isBeingOccupied: true,
+            isFlipped: true
+          }
+        } else {
+          return {
+            ...item,
+            isBeingOccupied: false
+          }
         }
-      } else {
-        return {
-          ...item,
-          isBeingOccupied: false
+      })
+
+      // setOccupiedXY({x, y})
+      setMappedWithLocations(copyMappedWithLocations)
+
+      const isIconMatch = pointSelectors.pointsForIcons.includes(cardData.iconId)
+      const isColorMatch = pointSelectors.pointsForColors.includes(cardData.colorId)
+      
+      if(isIconMatch && isColorMatch) {
+        const isAlreadyInPointsScored = pointsScored.filter((scoredPoint: ScoredPoint) => {return scoredPoint.colorId === cardData.colorId && scoredPoint.iconId === cardData.iconId})
+        const copyPointsScored = pointsScored
+        if (isAlreadyInPointsScored.length === 0) {
+          copyPointsScored.push({iconId: cardData.iconId, colorId: cardData.colorId, isFlipped: true})
         }
-      }
-    })
-
-    // setOccupiedXY({x, y})
-    setMappedWithLocations(copyMappedWithLocations)
-
-    const isIconMatch = pointSelectors.pointsForIcons.includes(cardData.iconId)
-    const isColorMatch = pointSelectors.pointsForColors.includes(cardData.colorId)
-    
-    if(isIconMatch && isColorMatch) {
-      const isAlreadyInPointsScored = pointsScored.filter((scoredPoint: ScoredPoint) => {return scoredPoint.colorId === cardData.colorId && scoredPoint.iconId === cardData.iconId})
-
-      const copyPointsScored = pointsScored
-      if (isAlreadyInPointsScored.length === 0) {
-        copyPointsScored.push({iconId: cardData.iconId, colorId: cardData.colorId, isFlipped: true})
+        setPointsScored(copyPointsScored)
       }
 
-      setPointsScored(copyPointsScored)
+      const indexWithTurnsToUse = searchChances.findIndex((searchChances: number) => {
+        return searchChances > 0
+      })
+
+      if (indexWithTurnsToUse > -1) {
+        let copySearchChances: number[] = searchChances
+        copySearchChances[indexWithTurnsToUse] = searchChances[indexWithTurnsToUse] - 1
+
+        setSearchChances(copySearchChances)
+      } 
+
     }
-
   }
 
   // DIFFICULTY
   const handleOnSelectDifficulty = (selectedDifficulty: DifficultyOption) => {
-    setDifficulty(selectedDifficulty)
+    if(!locks.isDifficultyLocked) {
+      setDifficulty(selectedDifficulty)
+    }
   }
 
   // CLICK SELECTORS
   const handleOnSelectorsClick = (selectorType: SelectorType, selectorIndex: number) => {
-    if(selectorType === SelectorType.ICON) {
-      if(pointSelectors.pointsForIcons.includes(selectorIndex)) {
-        const filteredIconSelectors = pointSelectors.pointsForIcons.filter((pointsForIcon: number) => {
-          return selectorIndex !== pointsForIcon
-        })
-        setPointSelectors({...pointSelectors, pointsForIcons: filteredIconSelectors})
-      } else {
-        const copy: number[] = pointSelectors.pointsForIcons
-        copy.push(selectorIndex)
-        setPointSelectors({...pointSelectors, pointsForIcons: copy})
-      }
-    } else if (selectorType === SelectorType.COLOR) {
-      if(pointSelectors.pointsForColors.includes(selectorIndex)) {
-        const filteredColorsSelectors = pointSelectors.pointsForColors.filter((pointsForColor: number) => {
-          return selectorIndex !== pointsForColor
-        })
-        setPointSelectors({...pointSelectors, pointsForColors: filteredColorsSelectors})
-      } else {
-        const copy: number[] = pointSelectors.pointsForColors
-        copy.push(selectorIndex)
-        setPointSelectors({...pointSelectors, pointsForColors: copy})
+    if(!locks.isSelectorsLocked) {
+      if(selectorType === SelectorType.ICON) {
+        if(pointSelectors.pointsForIcons.includes(selectorIndex)) {
+          const filteredIconSelectors = pointSelectors.pointsForIcons.filter((pointsForIcon: number) => {
+            return selectorIndex !== pointsForIcon
+          })
+          setPointSelectors({...pointSelectors, pointsForIcons: filteredIconSelectors})
+        } else {
+          const copy: number[] = pointSelectors.pointsForIcons
+          copy.push(selectorIndex)
+          setPointSelectors({...pointSelectors, pointsForIcons: copy})
+        }
+      } else if (selectorType === SelectorType.COLOR) {
+        if(pointSelectors.pointsForColors.includes(selectorIndex)) {
+          const filteredColorsSelectors = pointSelectors.pointsForColors.filter((pointsForColor: number) => {
+            return selectorIndex !== pointsForColor
+          })
+          setPointSelectors({...pointSelectors, pointsForColors: filteredColorsSelectors})
+        } else {
+          const copy: number[] = pointSelectors.pointsForColors
+          copy.push(selectorIndex)
+          setPointSelectors({...pointSelectors, pointsForColors: copy})
+        }
       }
     }
   }
 
   // LOCK SELECTORS
   const handleOnLock = (selectorType: SelectorType) => {
-    console.log(selectorType)
     if(selectorType === SelectorType.DIFFICULTY) {
       setLocks({...locks, isDifficultyLocked: true})
     } else if (selectorType === SelectorType.COLOR || selectorType === SelectorType.ICON) {
       setLocks({...locks, isSelectorsLocked: true})
+      const randomChances: number[] = searchChances.map((_) => {
+        return getRandomInt(6,1)
+      })
+      setSearchChances(randomChances)
     }
   }
 
@@ -251,8 +284,6 @@ const SearchMiniGameController: React.FC = () => {
       && (numberOfSelectedColors > 0 && numberOfSelectedIcons > 0)
       && Math.abs(numberOfSelectedColors - numberOfSelectedIcons) < 2
   }
-
-  console.log('locks', locks)
 
   return (
     <div className={'mainContentContainer'} style={styles.mainContentContainer}>
@@ -291,7 +322,10 @@ const SearchMiniGameController: React.FC = () => {
           onClick={handleOnLock}
           isSelectorsLocked={locks.isSelectorsLocked}
         />
-        
+        <DiceDisplay 
+          searchChances={searchChances}
+          containerWidth={selectorsWidth}
+        />
         {
           locks.isSelectorsLocked &&
           <Scoring 

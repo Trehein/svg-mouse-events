@@ -39,7 +39,7 @@ const PointSelectors: React.FC<PlayButtonProps> = ({playButtonHeight, isReadyToP
             rx={'6.5%'}
             stroke={'black'}
             strokeWidth={2}
-            fill='white'
+            fill={!(isReadyToPlay && isSelectorsLocked) ? 'white' : 'black'}
           />
           <g 
             transform={`translate(${(playButtonHeight) * .1} ${(playButtonHeight) * .1})`}              
@@ -47,7 +47,7 @@ const PointSelectors: React.FC<PlayButtonProps> = ({playButtonHeight, isReadyToP
             <IconContext.Provider 
               value={{ 
                 size: `${playButtonHeight * .7}`,
-                color: 'black'
+                color: !(isReadyToPlay && isSelectorsLocked) ? 'black' : 'white'
               }}
             >
               {/* <FaPlay /> */}

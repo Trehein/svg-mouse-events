@@ -34,7 +34,6 @@ const Dice: React.FC<DiceProps> = (props: DiceProps) => {
   const {size, diceColor, dotColor, displayValue} = props
   const selectedDotLayout = dotLayouts[displayValue]
 
-
   return (
     <svg height={size} width={size} >
       <rect 
@@ -43,6 +42,9 @@ const Dice: React.FC<DiceProps> = (props: DiceProps) => {
         height={size}
         width={size}
         fill={diceColor}
+        rx={'6.5%'}
+        stroke={'black'}
+        strokeWidth={2}
       />
       <g>
         {selectedDotLayout.map((slot: boolean, index: number) => {
