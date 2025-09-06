@@ -50,7 +50,10 @@ const Scoring: React.FC<ScoringProps> = ({scoredPoints, iconArray, colorArray, w
           {
             pointSelectors.pointsForIcons.map((iconId: number, index: number) => {
               return (
-                <g transform={`translate(0, ${squareContainerSize * index})`}>
+                <g 
+                  transform={`translate(0, ${squareContainerSize * index})`}
+                  key={`icon-${iconId}-${index}`}
+                >
                   <rect 
                     height={largeSquareSize}
                     width={largeSquareSize}
@@ -81,7 +84,10 @@ const Scoring: React.FC<ScoringProps> = ({scoredPoints, iconArray, colorArray, w
           {
             pointSelectors.pointsForColors.map((colorId: number, index: number) => {
               return (
-                <g transform={`translate(${squareContainerSize * index}, 0)`}>
+                <g 
+                  transform={`translate(${squareContainerSize * index}, 0)`}
+                  key={`icon-${colorId}-${index}`}
+                >
                   <rect 
                     height={largeSquareSize}
                     width={largeSquareSize}
@@ -116,12 +122,14 @@ const Scoring: React.FC<ScoringProps> = ({scoredPoints, iconArray, colorArray, w
           }
         </g>
 
-
         <g transform={`translate(${squareContainerSize}, ${squareContainerSize})`}>
           {
             pointSlots.map((pointSlot: PointSlot, index) => {
               return (
-                <g transform={`translate(${squareContainerSize * Math.floor(index % pointSelectors.pointsForColors.length)}, ${squareContainerSize * Math.floor(index / pointSelectors.pointsForColors.length)})`}>
+                <g 
+                  transform={`translate(${squareContainerSize * Math.floor(index % pointSelectors.pointsForColors.length)}, ${squareContainerSize * Math.floor(index / pointSelectors.pointsForColors.length)})`}
+                  key={`${pointSlot.colorId}-${pointSlot.iconId}-${index}`}
+                >
                   <rect 
                     height={largeSquareSize}
                     width={largeSquareSize}

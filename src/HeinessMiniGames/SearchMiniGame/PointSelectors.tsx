@@ -13,7 +13,6 @@ type PointSelectorsProps = {
   colorArray: string[],
   sectionWidth: number,
   handleOnSelectorsClick: Function,
-  handleOnLockSelectorsClick: Function,
   difficulty: DifficultyOption | undefined
 }
 
@@ -73,22 +72,11 @@ const PointSelectors: React.FC<PointSelectorsProps> = ({
   sectionWidth, 
   pointSelectors, 
   handleOnSelectorsClick,
-  handleOnLockSelectorsClick,
   difficulty
 }) => {
   const containerHeight = sectionWidth / 6
   const styles = pointSelectorsStyles(containerHeight)
-  const playButtonHeight = containerHeight * 1.5
   const activeSelectionHeight = containerHeight * .75
-  const isReadyToPlay: () => boolean = () => {
-    const numberOfSelectedColors = pointSelectors.pointsForColors.length
-    const numberOfSelectedIcons = pointSelectors.pointsForIcons.length
-
-    return difficulty !== undefined 
-      && ((numberOfSelectedColors + numberOfSelectedIcons) <= difficulty.numberOfSelectors)
-      && (numberOfSelectedColors > 0 && numberOfSelectedIcons > 0)
-      && Math.abs(numberOfSelectedColors - numberOfSelectedIcons) < 2
-  }
 
   return (
     <div className={'selectorInnerContainer'} style={styles.selectorInnerContainer}>
