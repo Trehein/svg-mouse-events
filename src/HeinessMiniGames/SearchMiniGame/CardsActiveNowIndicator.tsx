@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSpring, animated, config, useTrail, useTransition } from '@react-spring/web'
+import { easings, animated, config, useTrail } from '@react-spring/web'
 
 export type CardsActiveNowIndicatorProps = {
   squareSize: number
@@ -19,7 +19,7 @@ const CardsActiveNowIndicator: React.FC<CardsActiveNowIndicatorProps> = ({square
       config: {
         ...config.gentle, 
         duration: 750, 
-        // easing: easings.easeInBounce
+        easing: easings.easeInBounce
       },
   })
   

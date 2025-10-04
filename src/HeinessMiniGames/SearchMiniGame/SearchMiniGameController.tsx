@@ -285,6 +285,18 @@ const SearchMiniGameController: React.FC = () => {
       && Math.abs(numberOfSelectedColors - numberOfSelectedIcons) < 2
   }
 
+  const isCardsActive: () => boolean = () => {
+    let numberOfSearchChancesRemaining = 0
+    searchChances.forEach((searchChance: number) => {
+      numberOfSearchChancesRemaining += searchChance
+    })
+
+    console.log('numberOfSearchChancesRemaining', numberOfSearchChancesRemaining)
+    console.log('locks.isDifficultyLocked', locks.isSelectorsLocked)
+
+    return numberOfSearchChancesRemaining > 0 && locks.isSelectorsLocked
+  }
+
   return (
     <div className={'mainContentContainer'} style={styles.mainContentContainer}>
       <SearchCardDeck 
@@ -297,7 +309,8 @@ const SearchMiniGameController: React.FC = () => {
         gap={gap} 
         cardsData={mappedWithLocations} 
         handleOnSquareClick={handleOnSquareClick}    
-        pointSelectors={pointSelectors}    
+        pointSelectors={pointSelectors} 
+        isCardsActive={isCardsActive()}   
       />
       <div className={'sideContainer'} style={styles.sideContainer}>
         <div className={'setupSelectors'} style={styles.setupSelectors}>
