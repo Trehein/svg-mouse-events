@@ -1,6 +1,7 @@
 import React from 'react'
 import { IconContext } from 'react-icons'
 import { CardWithLocation, PointSelectorsState } from './SearchMiniGameController'
+import CardsActiveNowIndicator from './CardsActiveNowIndicator'
 
 export type SearchCardDeckProps = {
   margin: number,
@@ -27,6 +28,9 @@ const SearchCardDeck: React.FC<SearchCardDeckProps> = ({
   handleOnSquareClick,
   pointSelectors
 }) => {
+
+
+
   return (
     <svg height={outerHeight} width={outerWidth}>
       <g transform={`translate(${outerHeight * margin}, ${outerWidth * margin})`}>
@@ -56,6 +60,13 @@ const SearchCardDeck: React.FC<SearchCardDeckProps> = ({
                     strokeWidth={2}
                     rx={'.75%'}
                   />
+                  { !cardData.isFlipped && 
+                    <g transform={`translate(${squareSize * .25}, ${squareSize * .25})`}>
+                      <CardsActiveNowIndicator 
+                        squareSize={squareSize}
+                      />
+                    </g>
+                  }
                   { cardData.isFlipped &&                 
                     <g transform={`translate(${squareSize * .25}, ${squareSize * .25})`}>
                       <circle 
