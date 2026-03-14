@@ -27,15 +27,16 @@
 // import CreateAndDragArrowsController from "./demoComponents/CreateAndDragArrows/CreateAndDragArrowsController";
 // import DemoHeatmapController from "./DemoControllers/DemoHeatmapController";
 // import MatterExampleController from "./DemoControllers/MatterExampleController";
-import SearchMiniGameController from "./HeinessMiniGames/SearchMiniGame/SearchMiniGameController";
-
+// import SearchMiniGameController from "./HeinessMiniGames/SearchMiniGame/SearchMiniGameController";
+import SteamGameExplorerController from "./SteamGameExplorer/SteamGameExplorerController";
 // import ButtonDisplayer from "./demoComponents/Buttons/ButtonDisplayer";
 
 
 function App() {
   return (
     <div className="App">
-      <SearchMiniGameController />
+      <SteamGameExplorerController />
+      {/* <SearchMiniGameController /> */}
       {/* <MatterExampleController /> */}
       {/* <AnimatedDisplayCase /> */}
       {/* <BallMoveAlongPathController /> */}
