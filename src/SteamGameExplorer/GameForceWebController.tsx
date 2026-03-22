@@ -8,24 +8,32 @@ interface GameForceWebControllerProps {
 
 const GameForceWebController: React.FC<GameForceWebControllerProps> = ({data}) => {
 
-  const nodes = data.map((data: any, index: number) => {
+  const gameNodes = data.map((data: any, index: number) => {
     return {...data, title: data.Game, id: `${index}-${data.Game}`}
   })
 
   // todo make dynamic instead of just Publisher
-const anchorNodes = nodes.reduce((accumulator: any, currentItem: any) => {
-  if (!accumulator.seen.has(currentItem.Publisher)) {
-    accumulator.unique.push(currentItem);
-    accumulator.seen.add(currentItem.Publisher);
+const anchorNodes = gameNodes.reduce((accumulator: any, currentItem: any) => {
+  // todo make dynamic
+  if (currentItem.Publisher.length > 0) {
+    const parsedPublishers = currentItem.Publisher.split('|')
+    parsedPublishers.forEach((publisher: string) => {
+    if (!accumulator.seen.has(publisher.trim())) {
+      accumulator.unique.push(publisher.trim());
+      accumulator.seen.add(publisher.trim());
+    }
+    })
   }
+
   return accumulator;
 }, { seen: new Set(), unique: [] }).unique;
+
 
   const mappedAnchorNodes = anchorNodes.map((node: any, index: number) => {
     // todo make key dynamic
     return {
-      id: `${index}-${node.Publisher}`,
-      title: node.Publisher,
+      id: `${index}-${node}`,
+      title: node,
       nodeType: 'anchor' // todo make an enum
     }
   })
@@ -33,10 +41,12 @@ const anchorNodes = nodes.reduce((accumulator: any, currentItem: any) => {
 
   const createdLinks: any[] = []
 
-  nodes.forEach((node: any) => {
-    mappedAnchorNodes.forEach((publisherNode: any)=> {
-      if(node.Publisher === publisherNode.title) {
-        createdLinks.push({source: publisherNode.id, target: node.id})
+  gameNodes.forEach((node: any) => {
+    mappedAnchorNodes.forEach((anchorNode: any)=> {
+      if(node.Publisher.length > 0) {
+        if(node.Publisher.includes(anchorNode.title)) {
+          createdLinks.push({source: anchorNode.id, target: node.id})
+        }
       }
     })
   })
@@ -48,8 +58,14 @@ const anchorNodes = nodes.reduce((accumulator: any, currentItem: any) => {
   // Return the SVG element.
   return (
     <ForceGraph 
-        graphData={{nodes: [...nodes, ...mappedAnchorNodes], links: createdLinks}}
+        graphData={{nodes: [...gameNodes, ...mappedAnchorNodes], links: createdLinks}}
         nodeLabel="title"
+        nodeVal={(d) => {
+          return d.nodeType === 'anchor' ? 15 : 7
+        }}
+        nodeColor={(d) => {
+          return d.nodeType === 'anchor' ? 'rebeccaPurple' : 'salmon'
+        }}
     />
   )
 }
