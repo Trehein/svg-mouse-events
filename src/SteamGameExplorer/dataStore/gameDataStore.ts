@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 
 export const gameDataStore = create((set) => ({
-  gameData: [],
-
-  setSavedArrowsStore: (newGameData: any[]) => set({ gameData: newGameData})
-
+  gameNodeData: [],
+  setGameNodeData: (newGameNodeData: any[]) => set({ gameNodeData: newGameNodeData}),
+  forceGraphAnchorNodeKeyField: 'Genre',
+  setForceGraphAnchorNodeKeyField: (newForceGraphAnchorNodeKeyField: string) => set({ forceGraphAnchorNodeKeyField: newForceGraphAnchorNodeKeyField})
 }))

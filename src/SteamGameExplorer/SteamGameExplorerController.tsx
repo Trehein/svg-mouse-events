@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { steamPurchaseHistoryPiped } from '../data/steamPurchaseHistoryPiped'
 import GameForceWebController from './GameForceWebController'
 import DataSelectionController from './DataSelectionController'
+import { gameDataStore } from './dataStore/gameDataStore'
 
 export interface SteamDataObj {
   Developer: string,
@@ -16,6 +17,22 @@ export interface SteamDataObj {
 }
 
 const SteamGameExplorerController: React.FC = () => {  
+  const gameNodeData: any[] = gameDataStore((state: any) => state.gameNodeData)
+  const setGameNodeData: Function = gameDataStore((state: any) => state.setGameNodeData)
+
+  useEffect(() => {
+    if(gameNodeData.length === 0) {
+      setGameNodeData(steamPurchaseHistoryPiped.map((data: any, index: number) => {
+        return {...data, title: data.Game, id: `${index}-${data.Game}`}
+      }))
+    }
+  }, [])
+
+  if (gameNodeData.length === 0) {
+    return <div>Loading game data</div>
+  }
+
+  
 
   return (
     <div>
