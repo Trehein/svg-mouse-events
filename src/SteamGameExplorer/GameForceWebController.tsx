@@ -42,7 +42,7 @@ const generateLinkData = (gameNodes: any, mappedAnchorNodes: any, anchorField: s
 
 
 const GameForceWebController: React.FC<GameForceWebControllerProps> = ({data}) => {
-  const [state, setState] = useState({anchorField: 'Genre'})
+  const [state, setState] = useState({anchorField: 'Genre', height: 0})
   const gameNodes = data.map((data: any, index: number) => {
     return {...data, title: data.Game, id: `${index}-${data.Game}`}
   })
@@ -61,22 +61,34 @@ const GameForceWebController: React.FC<GameForceWebControllerProps> = ({data}) =
 
   console.log(gameNodes)
 
+  const containerRef: any = useRef(null)
+
+  useEffect(() => {
+    console.log(containerRef.current)
+    setState({...state, height: containerRef.current.clientHeight})
+  }, [])
+
+  console.log(state)
+
   // Return the SVG element.
   return (
-    <ForceGraph 
-        graphData={{nodes: [...gameNodes, ...mappedAnchorNodes], links: createdLinks}}
-        nodeLabel="title"
-        nodeVal={(d) => {
-          return d.nodeType === 'anchor' ? 25 : 7
-        }}
-        nodeRelSize={1}
-        nodeColor={(d) => {
-          return d.nodeType === 'anchor' ? 'rebeccaPurple' : 'salmon'
-        }}
-        linkDirectionalParticles={(d) => {
-          return 1
-        }}
-    />
+    <div style={{width: '100%', height: '100%'}} ref={containerRef}>
+      <ForceGraph 
+          height={state.height}
+          graphData={{nodes: [...gameNodes, ...mappedAnchorNodes], links: createdLinks}}
+          nodeLabel="title"
+          nodeVal={(d) => {
+            return d.nodeType === 'anchor' ? 25 : 7
+          }}
+          nodeRelSize={1}
+          nodeColor={(d) => {
+            return d.nodeType === 'anchor' ? 'rebeccaPurple' : 'salmon'
+          }}
+          linkDirectionalParticles={(d) => {
+            return 1
+          }}
+      />
+    </div>
   )
 }
 

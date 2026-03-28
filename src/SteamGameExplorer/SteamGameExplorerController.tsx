@@ -1,6 +1,7 @@
 import React from 'react'
 import { steamPurchaseHistoryPiped } from '../data/steamPurchaseHistoryPiped'
 import GameForceWebController from './GameForceWebController'
+import DataSelectionController from './DataSelectionController'
 
 export interface SteamDataObj {
   Developer: string,
@@ -17,9 +18,13 @@ export interface SteamDataObj {
 const SteamGameExplorerController: React.FC = () => {  
 
   return (
-    <div style={{width: '100vw', height: '100vh'}}>
-      <GameForceWebController  data={steamPurchaseHistoryPiped}/>
+    <div>
+      <DataSelectionController />
+      <div style={{width: '100vw', height: '80vh'}}>
+        <GameForceWebController  data={steamPurchaseHistoryPiped}/>
+      </div>
     </div>
+
   )
 }
 
