@@ -39,8 +39,10 @@ const generateLinkData = (gameNodes: any, mappedAnchorNodes: any, anchorField: s
   return createdLinks
 }
 
+
+
 const GameForceWebController: React.FC<GameForceWebControllerProps> = ({data}) => {
-  const [state, setState] = useState({anchorField: 'Developer'})
+  const [state, setState] = useState({anchorField: 'Genre'})
   const gameNodes = data.map((data: any, index: number) => {
     return {...data, title: data.Game, id: `${index}-${data.Game}`}
   })

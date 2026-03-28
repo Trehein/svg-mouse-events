@@ -1124,7 +1124,7 @@ export const steamPurchaseHistoryPiped =[
   {
     "Purchase Date": "1/4/21",
     "Game": "Pathfinder: Kingmaker - Enhanced Edition",
-    "Genre": "rpg | tactcal",
+    "Genre": "rpg | tactical",
     "Price": 14.76,
     "Release Date": "9/25/18",
     "Full Price": 19.99,
@@ -4281,7 +4281,7 @@ export const steamPurchaseHistoryPiped =[
   {
     "Purchase Date": "10/1/25",
     "Game": "Massive Chalice",
-    "Genre": "rpg tactical",
+    "Genre": "rpg | tactical",
     "Price": 4.31,
     "Release Date": "6/1/15",
     "Full Price": 19.99,
@@ -5645,7 +5645,7 @@ export const steamPurchaseHistoryPiped =[
   {
     "Purchase Date": "3/21/26",
     "Game": "Roki",
-    "Genre": "story | puzzle",
+    "Genre": "story | think",
     "Price": 1.79,
     "Release Date": "7/23/20",
     "Full Price": 17.99,
@@ -5656,7 +5656,7 @@ export const steamPurchaseHistoryPiped =[
   {
     "Purchase Date": "3/21/26",
     "Game": "Art is Rifle",
-    "Genre": "puzzle",
+    "Genre": "think",
     "Price": 1.99,
     "Release Date": "2/27/25",
     "Full Price": 19.99,
@@ -5678,7 +5678,7 @@ export const steamPurchaseHistoryPiped =[
   {
     "Purchase Date": "3/21/26",
     "Game": "Rhell: Warped Worlds & Troubled Times",
-    "Genre": "puzzle | rpg",
+    "Genre": "think | rpg",
     "Price": 11.99,
     "Release Date": "3/12/26",
     "Full Price": 14.99,
@@ -5700,7 +5700,7 @@ export const steamPurchaseHistoryPiped =[
   {
     "Purchase Date": "3/21/26",
     "Game": "Fingered",
-    "Genre": "puzzle",
+    "Genre": "think",
     "Price": 1.87,
     "Release Date": "8/18/15",
     "Full Price": 1.87,
