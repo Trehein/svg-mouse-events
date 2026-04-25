@@ -7,7 +7,7 @@ const DataSelectionController: React.FC = () => {
   const setForceGraphAnchorNodeKeyField: Function = gameDataStore((state: any) => state.setForceGraphAnchorNodeKeyField)
 
   return (
-    <div style={{width: '100%', height:'20vh'}}>
+    <div style={{width: '100%', height:'20vh', borderBottom: '1px solid lightslategray'}}>
       <label>Connection:</label>
 
       <select 
